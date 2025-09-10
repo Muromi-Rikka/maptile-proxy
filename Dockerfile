@@ -33,7 +33,7 @@ COPY package.json pnpm-lock.yaml ./
 
 # Install production dependencies only
 RUN npm install -g pnpm && \
-    pnpm install --prod --frozen-lockfile && \
+    pnpm install && \
     pnpm store prune
 
 # Copy built application
