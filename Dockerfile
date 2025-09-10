@@ -33,8 +33,7 @@ COPY package.json pnpm-lock.yaml ./
 
 # Install production dependencies only
 RUN npm install -g pnpm && \
-    pnpm install && \
-    pnpm store prune
+    pnpm install
 
 # Copy built application
 COPY --from=builder /app/dist ./dist
