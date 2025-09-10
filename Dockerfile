@@ -1,0 +1,55 @@
+# Build stage
+FROM node:20.19-bookworm AS builder
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN npm install -g pnpm
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
+COPY . .
+
+# Build TypeScript
+RUN pnpm run build
+
+# Production stage
+FROM node:20.19-bookworm-slim AS production
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN npm install -g pm2
+
+# Create app directory
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+
+# Install production dependencies only
+RUN npm install -g pnpm && \
+    pnpm install --prod --frozen-lockfile && \
+    pnpm store prune
+
+# Copy built application and PM2 config
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/ecosystem.config.js ./
+
+# Create logs directory
+RUN mkdir -p logs
+
+# Expose port
+EXPOSE 5000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:5000/health || exit 1
+
+# Start application with PM2
+CMD ["pm2-runtime", "start", "ecosystem.config.js", "--env", "production"]

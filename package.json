@@ -1,0 +1,45 @@
+{
+  "name": "maptile-proxy",
+  "type": "module",
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.14.0",
+  "description": "A map tile proxy server",
+  "author": "",
+  "license": "ISC",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "tsx --max-old-space-size=3072 --optimize-for-size index.ts",
+    "start": "tsx --env-file .env.local src/index.ts",
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "pm2:start": "pm2 start dist/index.js --name maptile-proxy",
+    "pm2:stop": "pm2 stop maptile-proxy",
+    "pm2:restart": "pm2 restart maptile-proxy",
+    "pm2:logs": "pm2 logs maptile-proxy",
+    "pm2:monit": "pm2 monit",
+    "serve": "node --max-old-space-size=3072 --optimize-for-size dist/index.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.884.0",
+    "@aws-sdk/s3-request-presigner": "^3.884.0",
+    "@hono/node-server": "^1.19.1",
+    "@smithy/node-http-handler": "^4.2.1",
+    "canvas": "^3.2.0",
+    "hono": "^4.9.6",
+    "hono-pino": "^0.10.2",
+    "nodom": "^2.4.0",
+    "ol": "^10.6.1",
+    "pino": "^9.9.2",
+    "pino-pretty": "^13.1.1"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^5.2.2",
+    "@types/node": "^24.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.42.0",
+    "@typescript-eslint/parser": "^8.42.0",
+    "eslint": "^9.34.0",
+    "pm2": "^6.0.10",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}
