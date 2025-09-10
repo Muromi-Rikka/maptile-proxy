@@ -59,23 +59,41 @@ pnpm start
 # Build image
 docker build -t maptile-server .
 
-# Run with environment variables
+# Run with basic configuration
 docker run -p 5000:5000 \
-  -e S3_BUCKET=your-bucket \
-  -e AWS_REGION=us-east-1 \
-  -e AWS_ACCESS_KEY_ID=your-key \
-  -e AWS_SECRET_ACCESS_KEY=your-secret \
+  -e MAP_SOURCE="https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=YOUR_KEY" \
+  -e PORT=5000 \
+  -e CACHE_MAX_SIZE=200 \
+  -e CACHE_RESET_INTERVAL=60000 \
+  -e TILE_LOAD_TIMEOUT=30000 \
   maptile-server
-```
 
-### Using Docker Compose
+# Run with AWS S3 storage
+docker run -p 5000:5000 \
+  -e MAP_SOURCE="https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=YOUR_KEY" \
+  -e PORT=5000 \
+  -e CACHE_MAX_SIZE=500 \
+  -e AWS_REGION=us-east-1 \
+  -e AWS_ACCESS_KEY_ID=your-access-key \
+  -e AWS_SECRET_ACCESS_KEY=your-secret-key \
+  -e S3_BUCKET=your-bucket-name \
+  -e S3_PREFIX=tiles \
+  maptile-server
 
-```bash
-# Start with docker-compose
-docker-compose up -d
+# Run with MinIO/S3-compatible storage
+docker run -p 5000:5000 \
+  -e MAP_SOURCE="https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=YOUR_KEY" \
+  -e PORT=5000 \
+  -e CACHE_MAX_SIZE=200 \
+  -e S3_ENDPOINT=http://your-minio-server:9000 \
+  -e S3_BUCKET=map-tiles \
+  -e AWS_ACCESS_KEY_ID=minioadmin \
+  -e AWS_SECRET_ACCESS_KEY=minioadmin \
+  -e S3_PREFIX=tiles \
+  maptile-server
 
-# View logs
-docker-compose logs -f
+# Run with environment file
+docker run -p 5000:5000 --env-file .env maptile-server
 ```
 
 ## ⚙️ Configuration
@@ -146,7 +164,7 @@ GET /appmaptile?x={x}&y={y}&z={z}
 
 **Parameters:**
 - `x` (int): Tile x coordinate
-- `y` (int): Tile y coordinate  
+- `y` (int): Tile y coordinate
 - `z` (int): Zoom level
 
 **Response:**

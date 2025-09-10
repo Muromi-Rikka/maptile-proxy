@@ -20,11 +20,10 @@ COPY . .
 RUN pnpm run build
 
 # Production stage
-FROM node:20.19-bookworm-slim AS production
+FROM node:20.19-bookworm AS production
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN npm install -g pm2
 
 # Create app directory
 WORKDIR /app
@@ -37,12 +36,8 @@ RUN npm install -g pnpm && \
     pnpm install --prod --frozen-lockfile && \
     pnpm store prune
 
-# Copy built application and PM2 config
+# Copy built application
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/ecosystem.config.js ./
-
-# Create logs directory
-RUN mkdir -p logs
 
 # Expose port
 EXPOSE 5000
@@ -51,5 +46,5 @@ EXPOSE 5000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:5000/health || exit 1
 
-# Start application with PM2
-CMD ["pm2-runtime", "start", "ecosystem.config.js", "--env", "production"]
+# Start application with Node.js
+CMD ["node", "--max-old-space-size=3072", "--optimize-for-size", "dist/src/index.js"]

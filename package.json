@@ -8,15 +8,10 @@
   "license": "ISC",
   "main": "index.ts",
   "scripts": {
-    "dev": "tsx --max-old-space-size=3072 --optimize-for-size index.ts",
+    "dev": "tsx --max-old-space-size=3072 --optimize-for-size src/index.ts",
     "start": "tsx --env-file .env.local src/index.ts",
     "build": "tsc",
     "type-check": "tsc --noEmit",
-    "pm2:start": "pm2 start dist/index.js --name maptile-proxy",
-    "pm2:stop": "pm2 stop maptile-proxy",
-    "pm2:restart": "pm2 restart maptile-proxy",
-    "pm2:logs": "pm2 logs maptile-proxy",
-    "pm2:monit": "pm2 monit",
     "serve": "node --max-old-space-size=3072 --optimize-for-size dist/index.js"
   },
   "dependencies": {
@@ -38,7 +33,6 @@
     "@typescript-eslint/eslint-plugin": "^8.42.0",
     "@typescript-eslint/parser": "^8.42.0",
     "eslint": "^9.34.0",
-    "pm2": "^6.0.10",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   }
