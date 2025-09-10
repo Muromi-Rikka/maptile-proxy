@@ -29,11 +29,11 @@ ENV PATH="$PNPM_HOME:$PATH"
 WORKDIR /app
 
 # Copy package files
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Install production dependencies only
 RUN npm install -g pnpm && \
-    pnpm install
+    pnpm install --prod --frozen-lockfile
 
 # Copy built application
 COPY --from=builder /app/dist ./dist
