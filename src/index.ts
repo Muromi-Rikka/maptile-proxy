@@ -218,7 +218,7 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
     const tile = (renderLayer as any).getTile(z, x, y, {
       pixelRatio: 1.0,
       viewState: {
-        projection: olProj.get("EPSG:3857") || olProj.get("EPSG:4326"),
+        projection: olProj.get("EPSG:3857"),
       },
     });
 
