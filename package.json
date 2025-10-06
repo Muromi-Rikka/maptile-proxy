@@ -21,7 +21,7 @@
     "@smithy/node-http-handler": "^4.3.0",
     "canvas": "^3.2.0",
     "hono": "^4.9.9",
-    "hono-pino": "^0.10.2",
+    "hono-pino": "^0.10.3",
     "nodom": "^2.4.0",
     "ol": "^10.6.1",
     "pino": "^10.0.0",
