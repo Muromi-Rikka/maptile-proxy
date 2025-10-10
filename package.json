@@ -25,7 +25,7 @@
     "nodom": "^2.4.0",
     "ol": "^10.6.1",
     "pino": "^10.0.0",
-    "pino-pretty": "^13.1.1"
+    "pino-pretty": "^13.1.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^5.4.1",
