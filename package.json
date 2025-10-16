@@ -18,7 +18,7 @@
     "@aws-sdk/client-s3": "^3.911.0",
     "@aws-sdk/s3-request-presigner": "^3.911.0",
     "@hono/node-server": "^1.19.5",
-    "@smithy/node-http-handler": "^4.4.1",
+    "@smithy/node-http-handler": "^4.4.2",
     "canvas": "^3.2.0",
     "hono": "^4.9.12",
     "hono-pino": "^0.10.3",
