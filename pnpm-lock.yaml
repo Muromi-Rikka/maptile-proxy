@@ -16,7 +16,7 @@ importers:
         version: 3.916.0
       '@hono/node-server':
         specifier: ^1.19.5
-        version: 1.19.5(hono@4.10.2)
+        version: 1.19.5(hono@4.10.3)
       '@smithy/node-http-handler':
         specifier: ^4.4.3
         version: 4.4.3
@@ -24,11 +24,11 @@ importers:
         specifier: ^3.2.0
         version: 3.2.0
       hono:
-        specifier: ^4.10.2
-        version: 4.10.2
+        specifier: ^4.10.3
+        version: 4.10.3
       hono-pino:
         specifier: ^0.10.3
-        version: 0.10.3(hono@4.10.2)(pino@10.1.0)
+        version: 0.10.3(hono@4.10.3)(pino@10.1.0)
       nodom:
         specifier: ^2.4.0
         version: 2.4.0
@@ -194,6 +194,7 @@ packages:
   '@aws-sdk/middleware-expect-continue@3.916.0':
     resolution: {integrity: sha512-p7TMLZZ/j5NbC7/cz7xNgxLz/OHYuh91MeCZdCedJiyh3rx6gunFtl9eiDtrh+Y8hjs0EwR0zYIuhd6pL1O8zg==}
     engines: {node: '>=18.0.0'}
+    deprecated: '@aws-sdk/middleware-expect-continue v3.916.0 contains an accidental console.log statement (https://github.com/aws/aws-sdk-js-v3/pull/7454), please upgrade to v3.917.0+'
 
   '@aws-sdk/middleware-flexible-checksums@3.916.0':
     resolution: {integrity: sha512-CBRRg6slHHBYAm26AWY/pECHK0vVO/peDoNhZiAzUNt4jV6VftotjszEJ904pKGOr7/86CfZxtCnP3CCs3lQjA==}
@@ -1554,8 +1555,8 @@ packages:
       hono: '>=4.0.0'
       pino: '>=7.1.0'
 
-  hono@4.10.2:
-    resolution: {integrity: sha512-p6fyzl+mQo6uhESLxbF5WlBOAJMDh36PljwlKtP5V1v09NxlqGru3ShK+4wKhSuhuYf8qxMmrivHOa/M7q0sMg==}
+  hono@4.10.3:
+    resolution: {integrity: sha512-2LOYWUbnhdxdL8MNbNg9XZig6k+cZXm5IjHn2Aviv7honhBMOHb+jxrKIeJRZJRmn+htUCKhaicxwXuUDlchRA==}
     engines: {node: '>=16.9.0'}
 
   ieee754@1.2.1:
@@ -3027,9 +3028,9 @@ snapshots:
       '@eslint/core': 0.16.0
       levn: 0.4.1
 
-  '@hono/node-server@1.19.5(hono@4.10.2)':
+  '@hono/node-server@1.19.5(hono@4.10.3)':
     dependencies:
-      hono: 4.10.2
+      hono: 4.10.3
 
   '@humanfs/core@0.19.1': {}
 
@@ -4265,13 +4266,13 @@ snapshots:
 
   help-me@5.0.0: {}
 
-  hono-pino@0.10.3(hono@4.10.2)(pino@10.1.0):
+  hono-pino@0.10.3(hono@4.10.3)(pino@10.1.0):
     dependencies:
       defu: 6.1.4
-      hono: 4.10.2
+      hono: 4.10.3
       pino: 10.1.0
 
-  hono@4.10.2: {}
+  hono@4.10.3: {}
 
   ieee754@1.2.1: {}
 
