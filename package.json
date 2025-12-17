@@ -15,8 +15,8 @@
     "serve": "node --max-old-space-size=3072 --optimize-for-size dist/index.js"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.952.0",
-    "@aws-sdk/s3-request-presigner": "^3.952.0",
+    "@aws-sdk/client-s3": "^3.953.0",
+    "@aws-sdk/s3-request-presigner": "^3.953.0",
     "@hono/node-server": "^1.19.7",
     "@smithy/node-http-handler": "^4.4.6",
     "canvas": "^3.2.0",
