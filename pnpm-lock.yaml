@@ -18,8 +18,8 @@ importers:
         specifier: ^1.19.7
         version: 1.19.7(hono@4.11.1)
       '@smithy/node-http-handler':
-        specifier: ^4.4.6
-        version: 4.4.6
+        specifier: ^4.4.7
+        version: 4.4.7
       canvas:
         specifier: ^3.2.0
         version: 3.2.0
@@ -578,10 +578,6 @@ packages:
     resolution: {integrity: sha512-TeheYy0ILzBEI/CO55CP6zJCSdSWeRtGnHy8U8dWSUH4I68iqTsy7HkMktR4xakThc9jotkPQUXT4ITdbV7cHA==}
     engines: {node: '>=18'}
 
-  '@smithy/abort-controller@4.2.6':
-    resolution: {integrity: sha512-P7JD4J+wxHMpGxqIg6SHno2tPkZbBUBLbPpR5/T1DEUvw/mEaINBMaPFZNM7lA+ToSCZ36j6nMHa+5kej+fhGg==}
-    engines: {node: '>=18.0.0'}
-
   '@smithy/abort-controller@4.2.7':
     resolution: {integrity: sha512-rzMY6CaKx2qxrbYbqjXWS0plqEy7LOdKHS0bg4ixJ6aoGDPNUcLWk/FRNuCILh7GKLG9TFUXYYeQQldMBBwuyw==}
     engines: {node: '>=18.0.0'}
@@ -682,10 +678,6 @@ packages:
     resolution: {integrity: sha512-7r58wq8sdOcrwWe+klL9y3bc4GW1gnlfnFOuL7CXa7UzfhzhxKuzNdtqgzmTV+53lEp9NXh5hY/S4UgjLOzPfw==}
     engines: {node: '>=18.0.0'}
 
-  '@smithy/node-http-handler@4.4.6':
-    resolution: {integrity: sha512-Gsb9jf4ido5BhPfani4ggyrKDd3ZK+vTFWmUaZeFg5G3E5nhFmqiTzAIbHqmPs1sARuJawDiGMGR/nY+Gw6+aQ==}
-    engines: {node: '>=18.0.0'}
-
   '@smithy/node-http-handler@4.4.7':
     resolution: {integrity: sha512-NELpdmBOO6EpZtWgQiHjoShs1kmweaiNuETUpuup+cmm/xJYjT4eUjfhrXRP4jCOaAsS3c3yPsP3B+K+/fyPCQ==}
     engines: {node: '>=18.0.0'}
@@ -694,16 +686,8 @@ packages:
     resolution: {integrity: sha512-jmNYKe9MGGPoSl/D7JDDs1C8b3dC8f/w78LbaVfoTtWy4xAd5dfjaFG9c9PWPihY4ggMQNQSMtzU77CNgAJwmA==}
     engines: {node: '>=18.0.0'}
 
-  '@smithy/protocol-http@5.3.6':
-    resolution: {integrity: sha512-qLRZzP2+PqhE3OSwvY2jpBbP0WKTZ9opTsn+6IWYI0SKVpbG+imcfNxXPq9fj5XeaUTr7odpsNpK6dmoiM1gJQ==}
-    engines: {node: '>=18.0.0'}
-
   '@smithy/protocol-http@5.3.7':
     resolution: {integrity: sha512-1r07pb994I20dD/c2seaZhoCuNYm0rWrvBxhCQ70brNh11M5Ml2ew6qJVo0lclB3jMIXirD4s2XRXRe7QEi0xA==}
-    engines: {node: '>=18.0.0'}
-
-  '@smithy/querystring-builder@4.2.6':
-    resolution: {integrity: sha512-MeM9fTAiD3HvoInK/aA8mgJaKQDvm8N0dKy6EiFaCfgpovQr4CaOkJC28XqlSRABM+sHdSQXbC8NZ0DShBMHqg==}
     engines: {node: '>=18.0.0'}
 
   '@smithy/querystring-builder@4.2.7':
@@ -728,10 +712,6 @@ packages:
 
   '@smithy/smithy-client@4.10.2':
     resolution: {integrity: sha512-D5z79xQWpgrGpAHb054Fn2CCTQZpog7JELbVQ6XAvXs5MNKWf28U9gzSBlJkOyMl9LA1TZEjRtwvGXfP0Sl90g==}
-    engines: {node: '>=18.0.0'}
-
-  '@smithy/types@4.10.0':
-    resolution: {integrity: sha512-K9mY7V/f3Ul+/Gz4LJANZ3vJ/yiBIwCyxe0sPT4vNJK63Srvd+Yk1IzP0t+nE7XFSpIGtzR71yljtnqpUTYFlQ==}
     engines: {node: '>=18.0.0'}
 
   '@smithy/types@4.11.0':
@@ -2990,11 +2970,6 @@ snapshots:
 
   '@sindresorhus/base62@1.0.0': {}
 
-  '@smithy/abort-controller@4.2.6':
-    dependencies:
-      '@smithy/types': 4.10.0
-      tslib: 2.8.1
-
   '@smithy/abort-controller@4.2.7':
     dependencies:
       '@smithy/types': 4.11.0
@@ -3163,14 +3138,6 @@ snapshots:
       '@smithy/types': 4.11.0
       tslib: 2.8.1
 
-  '@smithy/node-http-handler@4.4.6':
-    dependencies:
-      '@smithy/abort-controller': 4.2.6
-      '@smithy/protocol-http': 5.3.6
-      '@smithy/querystring-builder': 4.2.6
-      '@smithy/types': 4.10.0
-      tslib: 2.8.1
-
   '@smithy/node-http-handler@4.4.7':
     dependencies:
       '@smithy/abort-controller': 4.2.7
@@ -3184,20 +3151,9 @@ snapshots:
       '@smithy/types': 4.11.0
       tslib: 2.8.1
 
-  '@smithy/protocol-http@5.3.6':
-    dependencies:
-      '@smithy/types': 4.10.0
-      tslib: 2.8.1
-
   '@smithy/protocol-http@5.3.7':
     dependencies:
       '@smithy/types': 4.11.0
-      tslib: 2.8.1
-
-  '@smithy/querystring-builder@4.2.6':
-    dependencies:
-      '@smithy/types': 4.10.0
-      '@smithy/util-uri-escape': 4.2.0
       tslib: 2.8.1
 
   '@smithy/querystring-builder@4.2.7':
@@ -3239,10 +3195,6 @@ snapshots:
       '@smithy/protocol-http': 5.3.7
       '@smithy/types': 4.11.0
       '@smithy/util-stream': 4.5.8
-      tslib: 2.8.1
-
-  '@smithy/types@4.10.0':
-    dependencies:
       tslib: 2.8.1
 
   '@smithy/types@4.11.0':
