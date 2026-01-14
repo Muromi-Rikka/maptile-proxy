@@ -15,8 +15,8 @@ importers:
         specifier: ^3.968.0
         version: 3.968.0
       '@hono/node-server':
-        specifier: ^1.19.8
-        version: 1.19.8(hono@4.11.4)
+        specifier: ^1.19.9
+        version: 1.19.9(hono@4.11.4)
       '@smithy/node-http-handler':
         specifier: ^4.4.8
         version: 4.4.8
@@ -561,8 +561,8 @@ packages:
     resolution: {integrity: sha512-hZ2uC1jbf6JMSsF2ZklhRQqf6GLpYyux6DlzegnW/aFlpu6qJj5GO7ub7WOETCrEl6pl6DAX7RgTgj/fyG+6BQ==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@hono/node-server@1.19.8':
-    resolution: {integrity: sha512-0/g2lIOPzX8f3vzW1ggQgvG5mjtFBDBHFAzI5SFAi2DzSqS9luJwqg9T6O/gKYLi+inS7eNxBeIFkkghIPvrMA==}
+  '@hono/node-server@1.19.9':
+    resolution: {integrity: sha512-vHL6w3ecZsky+8P5MD+eFfaGTyCeOHUIFYMGpQGbrBTSmNNoxv0if69rEZ5giu36weC5saFuznL411gRX7bJDw==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
       hono: ^4
@@ -3027,7 +3027,7 @@ snapshots:
       '@eslint/core': 1.0.1
       levn: 0.4.1
 
-  '@hono/node-server@1.19.8(hono@4.11.4)':
+  '@hono/node-server@1.19.9(hono@4.11.4)':
     dependencies:
       hono: 4.11.4
 
