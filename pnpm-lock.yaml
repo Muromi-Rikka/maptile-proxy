@@ -16,7 +16,7 @@ importers:
         version: 3.998.0
       '@hono/node-server':
         specifier: ^1.19.9
-        version: 1.19.9(hono@4.12.2)
+        version: 1.19.9(hono@4.12.3)
       '@smithy/node-http-handler':
         specifier: ^4.4.12
         version: 4.4.12
@@ -24,11 +24,11 @@ importers:
         specifier: ^3.2.1
         version: 3.2.1
       hono:
-        specifier: ^4.12.2
-        version: 4.12.2
+        specifier: ^4.12.3
+        version: 4.12.3
       hono-pino:
         specifier: ^0.10.3
-        version: 0.10.3(hono@4.12.2)(pino@10.3.1)
+        version: 0.10.3(hono@4.12.3)(pino@10.3.1)
       nodom:
         specifier: ^2.4.0
         version: 2.4.0
@@ -1489,8 +1489,8 @@ packages:
       hono: '>=4.0.0'
       pino: '>=7.1.0'
 
-  hono@4.12.2:
-    resolution: {integrity: sha512-gJnaDHXKDayjt8ue0n8Gs0A007yKXj4Xzb8+cNjZeYsSzzwKc0Lr+OZgYwVfB0pHfUs17EPoLvrOsEaJ9mj+Tg==}
+  hono@4.12.3:
+    resolution: {integrity: sha512-SFsVSjp8sj5UumXOOFlkZOG6XS9SJDKw0TbwFeV+AJ8xlST8kxK5Z/5EYa111UY8732lK2S/xB653ceuaoGwpg==}
     engines: {node: '>=16.9.0'}
 
   html-entities@2.6.0:
@@ -2878,9 +2878,9 @@ snapshots:
       '@eslint/core': 1.1.0
       levn: 0.4.1
 
-  '@hono/node-server@1.19.9(hono@4.12.2)':
+  '@hono/node-server@1.19.9(hono@4.12.3)':
     dependencies:
-      hono: 4.12.2
+      hono: 4.12.3
 
   '@humanfs/core@0.19.1': {}
 
@@ -4030,13 +4030,13 @@ snapshots:
 
   help-me@5.0.0: {}
 
-  hono-pino@0.10.3(hono@4.12.2)(pino@10.3.1):
+  hono-pino@0.10.3(hono@4.12.3)(pino@10.3.1):
     dependencies:
       defu: 6.1.4
-      hono: 4.12.2
+      hono: 4.12.3
       pino: 10.3.1
 
-  hono@4.12.2: {}
+  hono@4.12.3: {}
 
   html-entities@2.6.0: {}
 
