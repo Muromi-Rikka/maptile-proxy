@@ -20,7 +20,7 @@
     "@hono/node-server": "^1.19.9",
     "@smithy/node-http-handler": "^4.4.12",
     "canvas": "^3.2.1",
-    "hono": "^4.12.2",
+    "hono": "^4.12.3",
     "hono-pino": "^0.10.3",
     "nodom": "^2.4.0",
     "ol": "^10.8.0",
