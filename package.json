@@ -19,7 +19,7 @@
     "@aws-sdk/s3-request-presigner": "^3.1020.0",
     "@hono/node-server": "^1.19.12",
     "@smithy/node-http-handler": "^4.5.1",
-    "canvas": "^3.2.2",
+    "canvas": "^3.2.3",
     "hono": "^4.12.9",
     "hono-pino": "^0.10.3",
     "nodom": "^2.4.0",
