@@ -17,7 +17,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1023.0",
     "@aws-sdk/s3-request-presigner": "^3.1023.0",
-    "@hono/node-server": "^1.19.12",
+    "@hono/node-server": "^1.19.13",
     "@smithy/node-http-handler": "^4.5.1",
     "canvas": "^3.2.3",
     "hono": "^4.12.12",
