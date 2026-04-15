@@ -33,8 +33,8 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0
       ol:
-        specifier: ^10.8.0
-        version: 10.8.0
+        specifier: ^10.9.0
+        version: 10.9.0
       pino:
         specifier: ^10.3.1
         version: 10.3.1
@@ -1023,8 +1023,8 @@ packages:
   '@vue/shared@3.5.31':
     resolution: {integrity: sha512-nBxuiuS9Lj5bPkPbWogPUnjxxWpkRniX7e5UBQDWl6Fsf4roq9wwV+cR7ezQ4zXswNvPIlsdj1slcLB7XCsRAw==}
 
-  '@zarrita/storage@0.1.4':
-    resolution: {integrity: sha512-qURfJAQcQGRfDQ4J9HaCjGaj3jlJKc66bnRk6G/IeLUsM7WKyG7Bzsuf1EZurSXyc0I4LVcu6HaeQQ4d3kZ16g==}
+  '@zarrita/storage@0.2.0':
+    resolution: {integrity: sha512-855ZXqtnds7spnT8vNvD+MXa3QExP1m2GqShe8yt7uZXHnQLgJHgkpVwFjE1B0KDDRO0ki09hmk6OboTaIfPsQ==}
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -1862,8 +1862,8 @@ packages:
   object-deep-merge@2.0.0:
     resolution: {integrity: sha512-3DC3UMpeffLTHiuXSy/UG4NOIYTLlY9u3V82+djSCLYClWobZiS4ivYzpIUWrRY/nfsJ8cWsKyG3QfyLePmhvg==}
 
-  ol@10.8.0:
-    resolution: {integrity: sha512-kLk7jIlJvKyhVMAjORTXKjzlM6YIByZ1H/d0DBx3oq8nSPCG6/gbLr5RxukzPgwbhnAqh+xHNCmrvmFKhVMvoQ==}
+  ol@10.9.0:
+    resolution: {integrity: sha512-svbbgVQUmEHaKpLQ8kRySojs59Brvgl2zYIrqG9eQNXGfsbi55rQasZIDpwpQzDL6OlzrUb0H4hQaiX9wDoGmA==}
 
   on-exit-leak-free@2.1.2:
     resolution: {integrity: sha512-0eJJY6hXLGf1udHwfNftBqH+g73EU4B504nZeKpz1sYRKafAghwxEJunB2O7rDZkL4PGfsMVnTXZ2EjibbqcsA==}
@@ -2205,9 +2205,9 @@ packages:
   unist-util-visit@5.1.0:
     resolution: {integrity: sha512-m+vIdyeCOpdr/QeQCu2EzxX/ohgS8KbnPDgFni4dQsfSCtpz8UqDyY5GjRru8PDKuYn7Fq19j1CQ+nJSsGKOzg==}
 
-  unzipit@1.4.3:
-    resolution: {integrity: sha512-gsq2PdJIWWGhx5kcdWStvNWit9FVdTewm4SEG7gFskWs+XCVaULt9+BwuoBtJiRE8eo3L1IPAOrbByNLtLtIlg==}
-    engines: {node: '>=12'}
+  unzipit@2.0.0:
+    resolution: {integrity: sha512-DVeVIWUZCAQPNzm5sB0hpsG1GygTTdBnzNtYYEpInkttx5evkyqRgZi6rTczoySqp8hO5jHVKzrH0f23X8FZLg==}
+    engines: {node: '>=18'}
 
   update-browserslist-db@1.2.3:
     resolution: {integrity: sha512-Js0m9cx+qOgDxo0eMiFGEueWztz+d4+M3rGlmKPT+T4IS/jP4ylw3Nwpu6cpTTP8R1MAC1kF4VbdLt3ARf209w==}
@@ -2220,9 +2220,6 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
-
-  uzip-module@1.0.3:
-    resolution: {integrity: sha512-AMqwWZaknLM77G+VPYNZLEruMGWGzyigPK3/Whg99B3S6vGHuqsyl5ZrOv1UUF3paGK1U6PM0cnayioaryg/fA==}
 
   vue-eslint-parser@10.4.0:
     resolution: {integrity: sha512-Vxi9pJdbN3ZnVGLODVtZ7y4Y2kzAAE2Cm0CZ3ZDRvydVYxZ6VrnBhLikBsRS+dpwj4Jv4UCv21PTEwF5rQ9WXg==}
@@ -2265,8 +2262,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zarrita@0.6.2:
-    resolution: {integrity: sha512-8IV+2bWt5yiHNVK9GVEVK1tscpqDcJj8iz5cIKFOiWiWYUsK4V5njgMtnpkvKu6L7K+Og6zUShd8f+dwb6LvTA==}
+  zarrita@0.7.1:
+    resolution: {integrity: sha512-Nu4liRKJES1kkIjWALXSryglJf2+WJURUxgndklfX+mTBCd0lk4MV797p00lt4NzmU3Bbdbs10uxeN8LWwPyWA==}
 
   zstddec@0.2.0:
     resolution: {integrity: sha512-oyPnDa1X5c13+Y7mA/FDMNJrn4S8UNBe0KCqtDmor40Re7ALrPN6npFwyYVRRh+PqozZQdeg23QtbcamZnG5rA==}
@@ -3645,10 +3642,10 @@ snapshots:
 
   '@vue/shared@3.5.31': {}
 
-  '@zarrita/storage@0.1.4':
+  '@zarrita/storage@0.2.0':
     dependencies:
       reference-spec-reader: 0.2.0
-      unzipit: 1.4.3
+      unzipit: 2.0.0
 
   acorn-jsx@5.3.2(acorn@8.16.0):
     dependencies:
@@ -4692,14 +4689,14 @@ snapshots:
 
   object-deep-merge@2.0.0: {}
 
-  ol@10.8.0:
+  ol@10.9.0:
     dependencies:
       '@types/rbush': 4.0.0
       earcut: 3.0.2
       geotiff: 3.0.5
       pbf: 4.0.1
       rbush: 4.0.1
-      zarrita: 0.6.2
+      zarrita: 0.7.1
 
   on-exit-leak-free@2.1.2: {}
 
@@ -5055,9 +5052,7 @@ snapshots:
       unist-util-is: 6.0.1
       unist-util-visit-parents: 6.0.2
 
-  unzipit@1.4.3:
-    dependencies:
-      uzip-module: 1.0.3
+  unzipit@2.0.0: {}
 
   update-browserslist-db@1.2.3(browserslist@4.28.1):
     dependencies:
@@ -5070,8 +5065,6 @@ snapshots:
       punycode: 2.3.1
 
   util-deprecate@1.0.2: {}
-
-  uzip-module@1.0.3: {}
 
   vue-eslint-parser@10.4.0(eslint@10.2.0):
     dependencies:
@@ -5108,9 +5101,9 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zarrita@0.6.2:
+  zarrita@0.7.1:
     dependencies:
-      '@zarrita/storage': 0.1.4
+      '@zarrita/storage': 0.2.0
       numcodecs: 0.3.2
 
   zstddec@0.2.0: {}
