@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@aws-sdk/client-s3':
-        specifier: ^3.1036.0
-        version: 3.1036.0
+        specifier: ^3.1037.0
+        version: 3.1037.0
       '@aws-sdk/s3-request-presigner':
-        specifier: ^3.1036.0
-        version: 3.1036.0
+        specifier: ^3.1037.0
+        version: 3.1037.0
       '@hono/node-server':
         specifier: ^2.0.0
         version: 2.0.0(hono@4.12.15)
@@ -153,8 +153,8 @@ packages:
   '@aws-crypto/util@5.2.0':
     resolution: {integrity: sha512-4RkU9EsI6ZpBve5fseQlGNUWKMa1RLPQ1dnjnQoe07ldfIzcsGb5hC5W0Dm7u423KWzawlrpbjXBrXCEv9zazQ==}
 
-  '@aws-sdk/client-s3@3.1036.0':
-    resolution: {integrity: sha512-QGjLHw1xklwWX+MWt/7X66lMxjNQLOb0tjcwAU3PaBrYZ51kphDlfvc2sInNEsIU03+I158Y4WSMhl8l71SAsw==}
+  '@aws-sdk/client-s3@3.1037.0':
+    resolution: {integrity: sha512-DBmA1jAW8ST6C4srBxeL1/RLIir/d8WOm4s4mi59mGp6mBktHM59Kwb7GuURaCO60cotuce5zr0sKpMLPcBQyA==}
     engines: {node: '>=20.0.0'}
 
   '@aws-sdk/core@3.974.5':
@@ -245,8 +245,8 @@ packages:
     resolution: {integrity: sha512-CvJ2ZIjK/jVD/lbOpowBVElJyC1YxLTIJ13yM0AEo0t2v7swOzGjSA6lJGH+DwZXQhcjUjoYwc8bVYCX5MDr1A==}
     engines: {node: '>=20.0.0'}
 
-  '@aws-sdk/s3-request-presigner@3.1036.0':
-    resolution: {integrity: sha512-5LEXxcZrrCrPvd7/zIyadEIBsMeXyT6sg9tn3OkkwZ9Rl6Wfq7gxOI82Ei30cj0QXvzJwjcizpskmPh8M5QNtQ==}
+  '@aws-sdk/s3-request-presigner@3.1037.0':
+    resolution: {integrity: sha512-rZQS8DxrqPYXzOvaoysf6L4fHmgFbndZz3GfUMhlHG1iWmcQqH7v0AGhpjyNBY3cYAX8+CAkOkD4VUrntnHNbQ==}
     engines: {node: '>=20.0.0'}
 
   '@aws-sdk/signature-v4-multi-region@3.996.22':
@@ -2301,7 +2301,7 @@ snapshots:
       '@smithy/util-utf8': 2.3.0
       tslib: 2.8.1
 
-  '@aws-sdk/client-s3@3.1036.0':
+  '@aws-sdk/client-s3@3.1037.0':
     dependencies:
       '@aws-crypto/sha1-browser': 5.2.0
       '@aws-crypto/sha256-browser': 5.2.0
@@ -2634,7 +2634,7 @@ snapshots:
       '@smithy/types': 4.14.1
       tslib: 2.8.1
 
-  '@aws-sdk/s3-request-presigner@3.1036.0':
+  '@aws-sdk/s3-request-presigner@3.1037.0':
     dependencies:
       '@aws-sdk/signature-v4-multi-region': 3.996.22
       '@aws-sdk/types': 3.973.8
