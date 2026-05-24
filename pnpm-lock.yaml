@@ -15,8 +15,8 @@ importers:
         specifier: ^3.1049.0
         version: 3.1049.0
       '@hono/node-server':
-        specifier: ^2.0.2
-        version: 2.0.2(hono@4.12.19)
+        specifier: ^2.0.3
+        version: 2.0.3(hono@4.12.19)
       '@smithy/node-http-handler':
         specifier: ^4.7.3
         version: 4.7.3
@@ -515,8 +515,8 @@ packages:
     resolution: {integrity: sha512-rZAP3aVgB9ds9KOeUSL+zZ21hPmo8dh6fnIFwRQj5EAZl9gzR7wxYbYXYysAM8CTqGmUGyp2S4kUdV17MnGuWQ==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@hono/node-server@2.0.2':
-    resolution: {integrity: sha512-tXlTi1h/4V7sDe7i97IVP+9re9ZU7wXZZggnR5ucCRclf1+AX6YhGStrR5w8bLj+3Mlyl0pKfBh9gqTqqnGKfQ==}
+  '@hono/node-server@2.0.3':
+    resolution: {integrity: sha512-a0jV+/HRe3G5zjFID3zObAQFdkl6zpxTuqktdDDXS3MJKcrZIkB8OkLpNBlY/WXFqv2HF4a0takPej+aNFczWA==}
     engines: {node: '>=20'}
     peerDependencies:
       hono: ^4
@@ -2657,7 +2657,7 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
-  '@hono/node-server@2.0.2(hono@4.12.19)':
+  '@hono/node-server@2.0.3(hono@4.12.19)':
     dependencies:
       hono: 4.12.19
 
@@ -2849,8 +2849,8 @@ snapshots:
 
   '@typescript-eslint/project-service@8.59.0(typescript@6.0.3)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.59.3(typescript@6.0.3)
-      '@typescript-eslint/types': 8.59.3
+      '@typescript-eslint/tsconfig-utils': 8.59.4(typescript@6.0.3)
+      '@typescript-eslint/types': 8.59.4
       debug: 4.4.3
       typescript: 6.0.3
     transitivePeerDependencies:
