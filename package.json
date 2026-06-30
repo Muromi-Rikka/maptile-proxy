@@ -30,8 +30,8 @@
   "devDependencies": {
     "@antfu/eslint-config": "^9.1.0",
     "@types/node": "^24.13.2",
-    "@typescript-eslint/eslint-plugin": "^8.62.0",
-    "@typescript-eslint/parser": "^8.62.0",
+    "@typescript-eslint/eslint-plugin": "^8.62.1",
+    "@typescript-eslint/parser": "^8.62.1",
     "eslint": "^10.6.0",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3"
