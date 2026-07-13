@@ -16,7 +16,7 @@ importers:
         version: 3.1080.0
       '@hono/node-server':
         specifier: ^2.0.8
-        version: 2.0.8(hono@4.12.28)
+        version: 2.0.8(hono@4.12.30)
       '@smithy/node-http-handler':
         specifier: ^4.9.3
         version: 4.9.3
@@ -24,11 +24,11 @@ importers:
         specifier: ^3.2.3
         version: 3.2.3
       hono:
-        specifier: ^4.12.28
-        version: 4.12.28
+        specifier: ^4.12.30
+        version: 4.12.30
       hono-pino:
         specifier: ^0.10.3
-        version: 0.10.3(hono@4.12.28)(pino@10.3.1)
+        version: 0.10.3(hono@4.12.30)(pino@10.3.1)
       nodom:
         specifier: ^2.4.0
         version: 2.4.0
@@ -1347,8 +1347,8 @@ packages:
       hono: '>=4.0.0'
       pino: '>=7.1.0'
 
-  hono@4.12.28:
-    resolution: {integrity: sha512-YwUvVpSF7m1yOblFPrU3Hbo8XhPheBoiyfGuII6z19LnOr6JpDnyyp7LFNrfV56wS8tpvtBFGRISHN02pDdLOA==}
+  hono@4.12.30:
+    resolution: {integrity: sha512-emn+JoJjrN9YTpRDS5it/UI2SO9BAE37T6I3d963RxcZ81G9A4pr2SZTEiiaiKbzx+NKRg5BZ89fCL7gCJCUog==}
     engines: {node: '>=16.9.0'}
 
   html-entities@2.6.0:
@@ -2473,9 +2473,9 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
-  '@hono/node-server@2.0.8(hono@4.12.28)':
+  '@hono/node-server@2.0.8(hono@4.12.30)':
     dependencies:
-      hono: 4.12.28
+      hono: 4.12.30
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -2648,8 +2648,8 @@ snapshots:
 
   '@typescript-eslint/project-service@8.59.0(typescript@6.0.3)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.62.1(typescript@6.0.3)
-      '@typescript-eslint/types': 8.62.1
+      '@typescript-eslint/tsconfig-utils': 8.63.0(typescript@6.0.3)
+      '@typescript-eslint/types': 8.63.0
       debug: 4.4.3
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -3484,13 +3484,13 @@ snapshots:
 
   help-me@5.0.0: {}
 
-  hono-pino@0.10.3(hono@4.12.28)(pino@10.3.1):
+  hono-pino@0.10.3(hono@4.12.30)(pino@10.3.1):
     dependencies:
       defu: 6.1.7
-      hono: 4.12.28
+      hono: 4.12.30
       pino: 10.3.1
 
-  hono@4.12.28: {}
+  hono@4.12.30: {}
 
   html-entities@2.6.0: {}
 
