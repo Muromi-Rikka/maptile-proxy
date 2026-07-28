@@ -2,72 +2,22 @@ import type { Buffer } from "node:buffer";
 
 import process from "node:process";
 import { serve } from "@hono/node-server";
-import canvas from "canvas";
 import { Hono } from "hono";
-// import { pinoLogger as pinoLoggerHono } from "hono-pino";
-import { Document } from "nodom";
-import EventType from "ol/events/EventType.js";
-import { getTopLeft, getWidth } from "ol/extent.js";
-import * as olLayer from "ol/layer.js";
-import * as olProj from "ol/proj.js";
-import * as olSource from "ol/source.js";
-import WMTSTileGrid from "ol/tilegrid/WMTS.js";
-import TileState from "ol/TileState.js";
 import pino from "pino";
-import gcj02Mercator from "./gcj02.js";
 
+import TileFetcher from "./tile-fetcher.js";
 import TileStorage, { createDefaultStorage, NullStorage } from "./storage.js";
+import { warpTile } from "./warp.js";
 
 // ==================== Configuration ====================
 const MAP_SOURCE_URL = process.env.MAP_SOURCE || "http://wprd0{1-4}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=1&style=8";
+const MAP_SOURCE_HEADERS = process.env.MAP_SOURCE_HEADERS ? JSON.parse(process.env.MAP_SOURCE_HEADERS) : {};
 const CACHE_MAX_SIZE = Number.parseInt(process.env.CACHE_MAX_SIZE || "200");
 const CACHE_RESET_INTERVAL = Number.parseInt(process.env.CACHE_RESET_INTERVAL || "60000");
 const TILE_LOAD_TIMEOUT = Number.parseInt(process.env.TILE_LOAD_TIMEOUT || "30000");
 const SERVER_PORT = Number.parseInt(process.env.PORT || "5000");
 
-// ==================== Global Initialization ====================
-const Image = canvas.Image;
-const globalAny = globalThis as any;
-
-globalAny.Image = Image;
-globalAny.Canvas = canvas.Canvas;
-globalAny.OffscreenCanvas = canvas.Canvas;
-globalAny.WorkerGlobalScope = Object;
-globalAny.self = {};
-
-globalAny.document = new Document();
-globalAny.document.createElement_ori = globalAny.document.createElement;
-globalAny.document.createElement = (name: string) => {
-  if (name === "canvas") {
-    return new globalAny.Canvas(300, 300);
-  }
-  return globalAny.document.createElement_ori(name);
-};
-
-// Add event listener methods
-if (Image && Image.prototype) {
-  // eslint-disable-next-line ts/ban-ts-comment
-  // @ts-expect-error
-  // eslint-disable-next-line ts/no-unsafe-function-type
-  Image.prototype.addEventListener = function (type: string, handler: Function) {
-    (this as any)[`on${type}`] = handler.bind(this);
-  };
-
-  // eslint-disable-next-line ts/ban-ts-comment
-  // @ts-expect-error
-  Image.prototype.removeEventListener = function (type: string) {
-    (this as any)[`on${type}`] = null;
-  };
-}
-
-// ==================== Map Configuration ====================
-const ol = { proj: olProj, layer: olLayer, source: olSource };
-const projectionExtent = gcj02Mercator.getExtent();
-const size = getWidth(projectionExtent) / 256;
-
-const matrixIds = Array.from({ length: 19 }, (_, i) => i.toString());
-const resolutions = Array.from({ length: 19 }, (_, z) => size / 2 ** z);
-
+// ==================== Logger ====================
 const logger = pino({
   level: process.env.LOG_LEVEL || "info",
   transport: {
@@ -81,6 +31,13 @@ const logger = pino({
 });
 
 logger.info(`Map source URL: ${MAP_SOURCE_URL}`);
+
+// ==================== Tile Fetcher ====================
+const tileFetcher = new TileFetcher({
+  urlTemplate: MAP_SOURCE_URL,
+  timeout: TILE_LOAD_TIMEOUT,
+  headers: MAP_SOURCE_HEADERS,
+});
 
 // ==================== Storage Configuration ====================
 const s3Storage = createDefaultStorage() || new NullStorage();
@@ -140,41 +97,18 @@ class LRUCache {
   }
 }
 
-// ==================== Map Render Layer ====================
-function createRenderLayer() {
-  const amapLayer = new ol.layer.Tile({
-    opacity: 1.0,
-    source: new ol.source.XYZ({
-      projection: gcj02Mercator,
-      url: MAP_SOURCE_URL,
-      tileGrid: new WMTSTileGrid({
-        origin: getTopLeft(gcj02Mercator.getExtent()),
-        resolutions,
-        matrixIds,
-      }),
-      wrapX: true,
-    }),
-  });
-
-  return amapLayer.createRenderer();
-}
-
-let renderLayer = createRenderLayer();
 const tileCache = new LRUCache(CACHE_MAX_SIZE);
 
 // eslint-disable-next-line unused-imports/no-unused-vars
 const cacheResetInterval = setInterval(() => {
-  renderLayer = createRenderLayer();
   tileCache.clear();
-  logger.info("Tile cache cleared and render layer reset");
+  logger.info("Tile cache cleared");
   logger.info({ cacheStats: tileCache.getStats() }, "Cache stats after reset");
 }, CACHE_RESET_INTERVAL);
 
-export function resetRenderLayer(): void {
-  logger.info("Manually resetting render layer and cache");
-  renderLayer = createRenderLayer();
+export function resetCache(): void {
+  logger.info("Manually resetting cache");
   tileCache.clear();
-  logger.info("Tile cache cleared and render layer reset");
   logger.info({ cacheStats: tileCache.getStats() }, "Cache stats after reset");
 }
 
@@ -190,20 +124,19 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
 
   const cacheKey = `${x}-${y}-${z}`;
 
-  // 1. First check memory cache
+  // 1. Check memory cache
   const lruCachedTile = tileCache.get(cacheKey);
   if (lruCachedTile) {
     logger.info(`tile loaded from LRU cache: ${cacheKey}`);
     return lruCachedTile;
   }
 
-  // 2. Then check S3 cache (if enabled)
+  // 2. Check S3 cache (if enabled)
   if (s3Enabled) {
     try {
       const s3CachedTile = await s3Storage.getTile(z, x, y);
       if (s3CachedTile) {
         logger.info(`tile loaded from S3 cache: ${cacheKey}`);
-        // Also save to memory cache
         tileCache.set(cacheKey, s3CachedTile);
         return s3CachedTile;
       }
@@ -213,75 +146,9 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
     }
   }
 
-  // 3. If no cache exists, fetch from source
+  // 3. Warp tile from source
   try {
-    const tile = (renderLayer as any).getTile(z, x, y, {
-      pixelRatio: 1.0,
-      viewState: {
-        projection: olProj.get("EPSG:3857"),
-      },
-    });
-
-    if (!tile) {
-      throw new Error("Tile is null or undefined");
-    }
-
-    if (
-      tile.getState() !== TileState.LOADED
-      && tile.getState() !== TileState.EMPTY
-    ) {
-      logger.info("tile not loaded, reloading...");
-      await new Promise<void>((resolve, reject) => {
-        const timeout = setTimeout(() => {
-          // eslint-disable-next-line ts/no-use-before-define
-          tile.removeEventListener(EventType.CHANGE, handler);
-          const error = new Error(`Tile loading timeout after ${TILE_LOAD_TIMEOUT}ms`);
-          logger.error({ x, y, z, error: error.message }, "Tile loading timeout");
-          reject(error);
-        }, TILE_LOAD_TIMEOUT);
-
-        const handler = () => {
-          const s = tile.getState();
-          switch (s) {
-            case TileState.LOADED:
-            case TileState.EMPTY:
-              clearTimeout(timeout);
-              tile.removeEventListener(EventType.CHANGE, handler);
-              resolve();
-              break;
-            case TileState.ERROR: {
-              clearTimeout(timeout);
-              tile.removeEventListener(EventType.CHANGE, handler);
-              const error = new Error("Tile loading error");
-              logger.error({ x, y, z, state: s }, "Tile loading error");
-              reject(error);
-              break;
-            }
-            case TileState.IDLE:
-            case TileState.LOADING:
-              break;
-          }
-        };
-
-        tile.addEventListener(EventType.CHANGE, handler);
-        tile.load();
-      });
-    }
-
-    logger.info(`tile load finished, status: ${tile.getState()}`);
-
-    if (tile.getState() === TileState.ERROR) {
-      const error = new Error("Tile failed to load");
-      logger.error({ x, y, z, state: tile.getState() }, "Tile load failed");
-      throw error;
-    }
-
-    const data = (tile as any).getImage();
-    if (!data || typeof data.toBuffer !== "function") {
-      throw new Error("Invalid tile image data");
-    }
-
-    const buffer = data.toBuffer() as Buffer;
+    const buffer = await warpTile(x, y, z, tileFetcher);
 
     // 4. Save to memory cache
     tileCache.set(cacheKey, buffer);
@@ -323,20 +190,7 @@ function validateTileParams(x: string | undefined, y: string | undefined, z: str
 }
 
 // ==================== Hono Application ====================
-const pinoLogger = pino({
-  level: process.env.LOG_LEVEL || "info",
-  transport: {
-    target: "pino-pretty",
-    options: {
-      colorize: true,
-      translateTime: "SYS:standard",
-      ignore: "pid,hostname",
-    },
-  },
-});
-
 const app = new Hono();
-// app.use(pinoLoggerHono({ pino: pinoLogger }));
 
 app.use("*", async (c, next) => {
   const start = Date.now();
@@ -345,11 +199,11 @@ app.use("*", async (c, next) => {
   try {
     await next();
     const ms = Date.now() - start;
-    pinoLogger.info(`${req.method} ${req.url} - ${ms}ms`);
+    logger.info(`${req.method} ${req.url} - ${ms}ms`);
   }
   catch (err) {
     const ms = Date.now() - start;
-    pinoLogger.error(`${req.method} ${req.url} - ${ms}ms - Error: ${(err as Error).message}`);
+    logger.error(`${req.method} ${req.url} - ${ms}ms - Error: ${(err as Error).message}`);
     throw err;
   }
 });
@@ -415,7 +269,7 @@ app.get("/cache-stats", (c) => {
 
 app.post("/reset-cache", (c) => {
   try {
-    resetRenderLayer();
+    resetCache();
     return c.json({
       status: "success",
       message: "Cache reset successfully",
@@ -437,7 +291,6 @@ app.post("/s3-cache/clear", async (c) => {
     const { z, x, y } = c.req.query();
 
     if (z && x && y) {
-      // Clear specific tile
       const zNum = Number.parseInt(z);
       const xNum = Number.parseInt(x);
       const yNum = Number.parseInt(y);
