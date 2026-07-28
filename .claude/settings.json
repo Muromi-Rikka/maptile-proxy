@@ -1,0 +1,21 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "eslint --fix --stdin-filepath \"$CLAUDE_FILE_PATH\" < \"$CLAUDE_FILE_PATH\"",
+            "timeout": 10000
+          },
+          {
+            "type": "command",
+            "command": "pnpm run type-check",
+            "timeout": 30000
+          }
+        ]
+      }
+    ]
+  }
+}
