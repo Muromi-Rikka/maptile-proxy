@@ -1,3 +1,4 @@
-onlyBuiltDependencies:
-  - canvas
-  - esbuild
+minimumReleaseAge: 0
+allowBuilds:
+  canvas: true
+  esbuild: true
