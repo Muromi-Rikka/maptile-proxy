@@ -19,7 +19,7 @@ import gcj02Mercator from "./gcj02.js";
 import TileStorage, { createDefaultStorage, NullStorage } from "./storage.js";
 
 // ==================== Configuration ====================
-const MAP_SOURCE_URL = process.env.MAP_SOURCE || "http://wprd0{1-4}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=1&style=8";
+const MAP_SOURCE_URL = process.env.MAP_SOURCE || "http://wprd0{1-4}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=2&style=8";
 const CACHE_MAX_SIZE = Number.parseInt(process.env.CACHE_MAX_SIZE || "200");
 const CACHE_RESET_INTERVAL = Number.parseInt(process.env.CACHE_RESET_INTERVAL || "60000");
 const TILE_LOAD_TIMEOUT = Number.parseInt(process.env.TILE_LOAD_TIMEOUT || "30000");
@@ -39,7 +39,7 @@ globalAny.document = new Document();
 globalAny.document.createElement_ori = globalAny.document.createElement;
 globalAny.document.createElement = (name: string) => {
   if (name === "canvas") {
-    return new globalAny.Canvas(300, 300);
+    return new globalAny.Canvas(512, 512);
   }
   return globalAny.document.createElement_ori(name);
 };
@@ -216,7 +216,7 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
   // 3. If no cache exists, fetch from source
   try {
     const tile = (renderLayer as any).getTile(z, x, y, {
-      pixelRatio: 1.0,
+      pixelRatio: 2.0,
       viewState: {
         projection: olProj.get("EPSG:3857"),
       },
@@ -276,7 +276,16 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
       throw error;
     }
 
-    const data = (tile as any).getImage();
+    const tileImage = (tile as any).getImage();
+    console.log('Tile image type:', typeof tileImage);
+    console.log('Tile image constructor:', tileImage?.constructor?.name);
+    if (tileImage instanceof globalAny.Canvas) {
+      console.log('Canvas size:', tileImage.width, 'x', tileImage.height);
+    } else if (tileImage instanceof Image) {
+      console.log('Image size:', tileImage.width, 'x', tileImage.height);
+    }
+
+    const data = tileImage;
     if (!data || typeof data.toBuffer !== "function") {
       throw new Error("Invalid tile image data");
     }
