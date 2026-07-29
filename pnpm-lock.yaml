@@ -11,24 +11,15 @@ importers:
       '@aws-sdk/client-s3':
         specifier: ^3.1096.0
         version: 3.1096.0
-      '@aws-sdk/s3-request-presigner':
-        specifier: ^3.1096.0
-        version: 3.1096.0
       '@hono/node-server':
         specifier: ^2.0.12
         version: 2.0.12(hono@4.12.32)
-      '@smithy/node-http-handler':
-        specifier: ^4.9.12
-        version: 4.9.12
       canvas:
         specifier: ^3.2.3
         version: 3.2.3
       hono:
         specifier: ^4.12.32
         version: 4.12.32
-      hono-pino:
-        specifier: ^0.10.3
-        version: 0.10.3(hono@4.12.32)(pino@10.3.1)
       nodom:
         specifier: ^2.4.0
         version: 2.4.0
@@ -180,10 +171,6 @@ packages:
 
   '@aws-sdk/nested-clients@3.997.36':
     resolution: {integrity: sha512-b71Suv7L+DnhM0MsQHU4WO42I32kxLZi96PbVhZbxMYIoKnEZz3v+LSrG8fupAoA4cBSshCk1Dl/PeRz49qUSg==}
-    engines: {node: '>=20.0.0'}
-
-  '@aws-sdk/s3-request-presigner@3.1096.0':
-    resolution: {integrity: sha512-vyWoSQwoWLAr/rB06vstzOXLWFCrRvyTz5HQC0jwZ51oEe+GKCIvF671AHicUfiwiVjNZ257VponbCWmrzj0Kw==}
     engines: {node: '>=20.0.0'}
 
   '@aws-sdk/signature-v4-multi-region@3.996.42':
@@ -938,9 +925,6 @@ packages:
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
 
-  defu@6.1.7:
-    resolution: {integrity: sha512-7z22QmUWiQ/2d0KkdYmANbRUVABpZ9SNYyH5vx6PZ+nE5bcC0l7uFvEfHlyld/HcGBFTL536ClDt3DEcSlEJAQ==}
-
   dequal@2.0.3:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
@@ -1316,13 +1300,6 @@ packages:
 
   help-me@5.0.0:
     resolution: {integrity: sha512-7xgomUX6ADmcYzFik0HzAxh/73YlKR9bmFzf51CZwR+b6YtzU2m0u49hQCqV6SvlqIqsaxovfwdvbnsw3b/zpg==}
-
-  hono-pino@0.10.3:
-    resolution: {integrity: sha512-n0RNPIFOoq25Fg8b4D5gus4sVqI0z+8I17ibl96+p43d07UnZ0EMM/It0qSgfc7UtaC+XP5FkFmRHwBp6owsNA==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      hono: '>=4.0.0'
-      pino: '>=7.1.0'
 
   hono@4.12.32:
     resolution: {integrity: sha512-XcuyW9qE2kJn07PkecMOBd5Vq/hMy7mmGw+idz1yblbg9N17ijJODrvPkn7/dwL3Kulj8LcRJ69DLOWf91dRUg==}
@@ -2251,15 +2228,6 @@ snapshots:
       '@smithy/types': 4.16.1
       tslib: 2.8.1
 
-  '@aws-sdk/s3-request-presigner@3.1096.0':
-    dependencies:
-      '@aws-sdk/core': 3.977.1
-      '@aws-sdk/signature-v4-multi-region': 3.996.42
-      '@aws-sdk/types': 3.974.2
-      '@smithy/core': 3.31.0
-      '@smithy/types': 4.16.1
-      tslib: 2.8.1
-
   '@aws-sdk/signature-v4-multi-region@3.996.42':
     dependencies:
       '@aws-sdk/types': 3.974.2
@@ -2903,8 +2871,6 @@ snapshots:
 
   deep-is@0.1.4: {}
 
-  defu@6.1.7: {}
-
   dequal@2.0.3: {}
 
   detect-indent@7.0.2: {}
@@ -3338,12 +3304,6 @@ snapshots:
   graceful-fs@4.2.11: {}
 
   help-me@5.0.0: {}
-
-  hono-pino@0.10.3(hono@4.12.32)(pino@10.3.1):
-    dependencies:
-      defu: 6.1.7
-      hono: 4.12.32
-      pino: 10.3.1
 
   hono@4.12.32: {}
 
