@@ -1,9 +1,9 @@
 /**
  * GCJ-02 Coordinate System Implementation
- * 
+ *
  * This module provides coordinate transformation utilities between different coordinate systems,
  * specifically for handling China's GCJ-02 (Mars Coordinates) coordinate system.
- * 
+ *
  * GCJ-02 is a geodetic datum used by China that adds random offsets to WGS84 coordinates
  * for national security purposes. This implementation provides accurate transformations
  * between WGS84, GCJ-02, and Mercator projections.
@@ -34,16 +34,16 @@ interface ForEachPointFunction {
 
 /**
  * Creates a higher-order function that applies a point transformation to coordinate arrays
- * 
+ *
  * @param func - The point transformation function to apply to each coordinate
  * @returns A function that transforms entire coordinate arrays
- * 
+ *
  * @example
  * const transform = forEachPoint((input, output, offset) => {
  *   output[offset] = input[offset] + 1; // Shift longitude
  *   output[offset + 1] = input[offset + 1] + 1; // Shift latitude
  * });
- * 
+ *
  * const coords = [120.0, 30.0, 121.0, 31.0];
  * const transformed = transform(coords); // [121.0, 31.0, 122.0, 32.0]
  */
@@ -97,14 +97,14 @@ const OFFSET = 0.00669342162296594323;
 
 /**
  * Calculates the coordinate offset (delta) between WGS84 and GCJ-02 for a given point
- * 
+ *
  * This implements the core transformation algorithm that accounts for the
  * systematic offset introduced by the GCJ-02 coordinate system.
- * 
+ *
  * @param wgLon - WGS84 longitude
  * @param wgLat - WGS84 latitude
  * @returns Offset as [longitude_delta, latitude_delta]
- * 
+ *
  * @internal
  */
 function delta(wgLon: number, wgLat: number): [number, number] {
@@ -123,14 +123,14 @@ function delta(wgLon: number, wgLat: number): [number, number] {
 
 /**
  * Determines if a coordinate is outside China's transformation zone
- * 
+ *
  * Coordinates outside China don't need GCJ-02 transformation as the
  * offset algorithm only applies within Chinese territorial boundaries.
- * 
+ *
  * @param lon - Longitude
  * @param lat - Latitude
  * @returns true if coordinate is outside China, false if inside
- * 
+ *
  * @internal
  */
 function outOfChina(lon: number, lat: number): boolean {
@@ -139,14 +139,14 @@ function outOfChina(lon: number, lat: number): boolean {
 
 /**
  * Calculates latitude component of the GCJ-02 transformation offset
- * 
+ *
  * This implements the latitude-specific part of the Chinese coordinate
  * transformation algorithm using polynomial and trigonometric functions.
- * 
+ *
  * @param x - Delta longitude from reference point (105°E)
  * @param y - Delta latitude from reference point (35°N)
  * @returns Latitude offset in arcseconds
- * 
+ *
  * @internal
  */
 function transformLat(x: number, y: number): number {
@@ -159,14 +159,14 @@ function transformLat(x: number, y: number): number {
 
 /**
  * Calculates longitude component of the GCJ-02 transformation offset
- * 
+ *
  * This implements the longitude-specific part of the Chinese coordinate
  * transformation algorithm using polynomial and trigonometric functions.
- * 
+ *
  * @param x - Delta longitude from reference point (105°E)
  * @param y - Delta latitude from reference point (35°N)
  * @returns Longitude offset in arcseconds
- * 
+ *
  * @internal
  */
 function transformLon(x: number, y: number): number {
@@ -179,15 +179,15 @@ function transformLon(x: number, y: number): number {
 
 /**
  * Transform coordinates from GCJ-02 to WGS84
- * 
+ *
  * Removes the GCJ-02 offset from coordinates to get back to standard WGS84.
  * Coordinates outside China are returned unchanged.
- * 
+ *
  * @param input - Input coordinate array in GCJ-02 format
  * @param opt_output - Optional pre-allocated output array
  * @param opt_dimension - Optional dimension (defaults to 2)
  * @returns WGS84 coordinate array
- * 
+ *
  * @example
  * const gcjCoords = [121.473701, 31.230416]; // Shanghai in GCJ-02
  * const wgsCoords = gcj02.toWGS84(gcjCoords); // Shanghai in WGS84
@@ -208,15 +208,15 @@ gcj02.toWGS84 = forEachPoint((input: number[], output: number[], offset: number)
 
 /**
  * Transform coordinates from WGS84 to GCJ-02
- * 
+ *
  * Applies the GCJ-02 offset to standard WGS84 coordinates.
  * Coordinates outside China are returned unchanged.
- * 
+ *
  * @param input - Input coordinate array in WGS84 format
  * @param opt_output - Optional pre-allocated output array
  * @param opt_dimension - Optional dimension (defaults to 2)
  * @returns GCJ-02 coordinate array
- * 
+ *
  * @example
  * const wgsCoords = [121.473701, 31.230416]; // Shanghai in WGS84
  * const gcjCoords = gcj02.fromWGS84(wgsCoords); // Shanghai in GCJ-02
@@ -259,15 +259,15 @@ const RAD_PER_DEG = Math.PI / 180;
 
 /**
  * Forward spherical Mercator projection
- * 
+ *
  * Transforms geographic coordinates (longitude, latitude) to Web Mercator
  * projected coordinates (meters). Clips latitudes to prevent projection
  * singularities at the poles.
- * 
+ *
  * @param input - Input coordinate array [longitude, latitude]
  * @param output - Output coordinate array [x, y] in meters
  * @param offset - Current offset within the arrays
- * 
+ *
  * @internal
  */
 sphericalMercator.forward = forEachPoint((input: number[], output: number[], offset: number): void => {
@@ -280,14 +280,14 @@ sphericalMercator.forward = forEachPoint((input: number[], output: number[], off
 
 /**
  * Inverse spherical Mercator projection
- * 
+ *
  * Transforms Web Mercator projected coordinates (meters) back to
  * geographic coordinates (longitude, latitude).
- * 
+ *
  * @param input - Input coordinate array [x, y] in meters
  * @param output - Output coordinate array [longitude, latitude]
  * @param offset - Current offset within the arrays
- * 
+ *
  * @internal
  */
 sphericalMercator.inverse = forEachPoint((input: number[], output: number[], offset: number): void => {
@@ -297,7 +297,7 @@ sphericalMercator.inverse = forEachPoint((input: number[], output: number[], off
 
 /**
  * Projection transformation utilities combining coordinate system conversions
- * 
+ *
  * This interface provides functions that chain multiple transformations together,
  * such as WGS84 → GCJ-02 → Mercator and their inverses.
  */
@@ -321,9 +321,9 @@ const projzh: ProjZH = {} as ProjZH;
 
 /**
  * Transform WGS84 longitude/latitude to GCJ-02 Mercator
- * 
+ *
  * Chains WGS84 → GCJ-02 → Mercator transformations for use with OpenLayers.
- * 
+ *
  * @param input - Input coordinate array in WGS84 format
  * @param opt_output - Optional pre-allocated output array
  * @param opt_dimension - Optional dimension (defaults to 2)
@@ -336,9 +336,9 @@ projzh.ll2gmerc = (input: number[], opt_output?: number[], opt_dimension?: numbe
 
 /**
  * Transform GCJ-02 Mercator to WGS84 longitude/latitude
- * 
+ *
  * Chains Mercator → GCJ-02 → WGS84 transformations for use with OpenLayers.
- * 
+ *
  * @param input - Input coordinate array in GCJ-02 Mercator format
  * @param opt_output - Optional pre-allocated output array
  * @param opt_dimension - Optional dimension (defaults to 2)
@@ -351,7 +351,7 @@ projzh.gmerc2ll = (input: number[], opt_output?: number[], opt_dimension?: numbe
 
 /**
  * Transform standard Mercator to GCJ-02 Mercator
- * 
+ *
  * @param input - Input coordinate array in standard Mercator format
  * @param opt_output - Optional pre-allocated output array
  * @param opt_dimension - Optional dimension (defaults to 2)
@@ -365,7 +365,7 @@ projzh.smerc2gmerc = (input: number[], opt_output?: number[], opt_dimension?: nu
 
 /**
  * Transform GCJ-02 Mercator to standard Mercator
- * 
+ *
  * @param input - Input coordinate array in GCJ-02 Mercator format
  * @param opt_output - Optional pre-allocated output array
  * @param opt_dimension - Optional dimension (defaults to 2)
@@ -385,20 +385,20 @@ projzh.smerc2ll = sphericalMercator.inverse;
 
 /**
  * GCJ-02 projection extent in Web Mercator meters
- * 
+ *
  * Defines the valid coordinate range for GCJ-02 Mercator projection,
  * matching the standard Web Mercator extent.
  */
 const gcj02Extent: [number, number, number, number] = [
   -20037508.342789244, // West boundary
   -20037508.342789244, // South boundary
-  20037508.342789244,  // East boundary
-  20037508.342789244,  // North boundary
+  20037508.342789244, // East boundary
+  20037508.342789244, // North boundary
 ];
 
 /**
  * GCJ-02 projection instance for OpenLayers
- * 
+ *
  * This projection allows OpenLayers to work with GCJ-02 coordinates
  * directly, enabling proper display of Chinese map services.
  */
@@ -413,39 +413,39 @@ proj.addProjection(gcj02Mecator);
 
 /**
  * Register coordinate transformation from WGS84 (EPSG:4326) to GCJ-02 Mercator
- * 
+ *
  * Enables OpenLayers to automatically transform geographic coordinates
  * to GCJ-02 Mercator when using this projection.
  */
 proj.addCoordinateTransforms(
-  "EPSG:4326",     // Source: WGS84 geographic coordinates
-  gcj02Mecator,    // Target: GCJ-02 Mercator projection
+  "EPSG:4326", // Source: WGS84 geographic coordinates
+  gcj02Mecator, // Target: GCJ-02 Mercator projection
   projzh.ll2gmerc, // Forward transformation
   projzh.gmerc2ll, // Inverse transformation
 );
 
 /**
  * Register coordinate transformation from Web Mercator (EPSG:3857) to GCJ-02 Mercator
- * 
+ *
  * Enables OpenLayers to automatically transform Web Mercator coordinates
  * to GCJ-02 Mercator when using this projection.
  */
 proj.addCoordinateTransforms(
-  "EPSG:3857",     // Source: Web Mercator
-  gcj02Mecator,    // Target: GCJ-02 Mercator projection
+  "EPSG:3857", // Source: Web Mercator
+  gcj02Mecator, // Target: GCJ-02 Mercator projection
   projzh.smerc2gmerc, // Forward transformation
   projzh.gmerc2smerc, // Inverse transformation
 );
 
 /**
  * Default export: GCJ-02 projection instance
- * 
+ *
  * This projection can be used directly with OpenLayers to display
  * Chinese map data that uses the GCJ-02 coordinate system.
- * 
+ *
  * @example
  * import gcj02Projection from './gcj02';
- * 
+ *
  * // Use with OpenLayers
  * const map = new Map({
  *   view: new View({
