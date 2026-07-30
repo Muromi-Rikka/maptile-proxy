@@ -18,7 +18,7 @@ import gcj02Mercator from "./gcj02.js";
 import TileStorage, { createDefaultStorage, NullStorage } from "./storage.js";
 
 // ==================== Configuration ====================
-const MAP_SOURCE_URL = process.env.MAP_SOURCE || "http://wprd0{1-4}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=2&style=8";
+const MAP_SOURCE_URL = process.env.MAP_SOURCE || "https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=YOUR_MAPTILER_KEY";
 const CACHE_MAX_SIZE = Number.parseInt(process.env.CACHE_MAX_SIZE || "200");
 const CACHE_RESET_INTERVAL = Number.parseInt(process.env.CACHE_RESET_INTERVAL || "60000");
 const TILE_LOAD_TIMEOUT = Number.parseInt(process.env.TILE_LOAD_TIMEOUT || "30000");
@@ -141,7 +141,7 @@ class LRUCache {
 
 // ==================== Map Render Layer ====================
 function createRenderLayer() {
-  const amapLayer = new ol.layer.Tile({
+  const tileLayer = new ol.layer.Tile({
     opacity: 1.0,
     source: new ol.source.XYZ({
       projection: gcj02Mercator,
@@ -155,7 +155,7 @@ function createRenderLayer() {
     }),
   });
 
-  return amapLayer.createRenderer();
+  return tileLayer.createRenderer();
 }
 
 let renderLayer = createRenderLayer();

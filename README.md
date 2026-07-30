@@ -6,7 +6,7 @@ A high-performance map tile proxy server with GCJ-02 coordinate transformation a
 
 - **Multi-Layer Caching**: In-memory LRU cache + S3 persistent storage
 - **Coordinate Transformation**: WGS84 to GCJ-02 (China Mars Coordinate System)
-- **Multiple Map Sources**: Support for Amap, Google Maps, and other tile sources
+- **Multiple Map Sources**: Support for MapTiler, Google Maps, and other tile sources
 - **RESTful API**: Clean and intuitive REST API endpoints
 - **Docker Support**: Ready-to-use Docker and Docker Compose configurations
 - **Health Monitoring**: Built-in health checks and cache statistics
@@ -106,7 +106,7 @@ Copy `.env.example` to `.env` and configure as needed:
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `PORT` | Server port | `5000` |
-| `MAP_SOURCE` | Map tile source URL template | Amap URL |
+| `MAP_SOURCE` | Map tile source URL template | MapTiler URL |
 | `CACHE_MAX_SIZE` | Maximum in-memory cache size | `200` |
 | `CACHE_RESET_INTERVAL` | Cache reset interval (ms) | `60000` |
 | `TILE_LOAD_TIMEOUT` | Tile loading timeout (ms) | `30000` |
