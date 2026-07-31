@@ -4,7 +4,6 @@ import process from "node:process";
 import { serve } from "@hono/node-server";
 import canvas from "canvas";
 import { Hono } from "hono";
-// import { pinoLogger as pinoLoggerHono } from "hono-pino";
 import { Document } from "nodom";
 import EventType from "ol/events/EventType.js";
 import { getTopLeft, getWidth } from "ol/extent.js";
@@ -14,12 +13,12 @@ import * as olSource from "ol/source.js";
 import WMTSTileGrid from "ol/tilegrid/WMTS.js";
 import TileState from "ol/TileState.js";
 import pino from "pino";
-import gcj02Mercator from "./gcj02.js";
+import gcj02Mercator from "./gcj02";
 
-import TileStorage, { createDefaultStorage, NullStorage } from "./storage.js";
+import TileStorage, { createDefaultStorage, NullStorage } from "./storage";
 
 // ==================== Configuration ====================
-const MAP_SOURCE_URL = process.env.MAP_SOURCE || "http://wprd0{1-4}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=2&style=8";
+const MAP_SOURCE_URL = process.env.MAP_SOURCE || "https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=YOUR_MAPTILER_KEY";
 const CACHE_MAX_SIZE = Number.parseInt(process.env.CACHE_MAX_SIZE || "200");
 const CACHE_RESET_INTERVAL = Number.parseInt(process.env.CACHE_RESET_INTERVAL || "60000");
 const TILE_LOAD_TIMEOUT = Number.parseInt(process.env.TILE_LOAD_TIMEOUT || "30000");
@@ -142,7 +141,7 @@ class LRUCache {
 
 // ==================== Map Render Layer ====================
 function createRenderLayer() {
-  const amapLayer = new ol.layer.Tile({
+  const tileLayer = new ol.layer.Tile({
     opacity: 1.0,
     source: new ol.source.XYZ({
       projection: gcj02Mercator,
@@ -156,7 +155,7 @@ function createRenderLayer() {
     }),
   });
 
-  return amapLayer.createRenderer();
+  return tileLayer.createRenderer();
 }
 
 let renderLayer = createRenderLayer();
@@ -166,34 +165,26 @@ const tileCache = new LRUCache(CACHE_MAX_SIZE);
 const cacheResetInterval = setInterval(() => {
   renderLayer = createRenderLayer();
   tileCache.clear();
-  logger.info("Tile cache cleared and render layer reset");
-  logger.info({ cacheStats: tileCache.getStats() }, "Cache stats after reset");
+  logger.info({ cacheStats: tileCache.getStats() }, "Tile cache cleared and render layer reset");
 }, CACHE_RESET_INTERVAL);
 
 export function resetRenderLayer(): void {
   logger.info("Manually resetting render layer and cache");
   renderLayer = createRenderLayer();
   tileCache.clear();
-  logger.info("Tile cache cleared and render layer reset");
-  logger.info({ cacheStats: tileCache.getStats() }, "Cache stats after reset");
+  logger.info({ cacheStats: tileCache.getStats() }, "Tile cache cleared and render layer reset");
 }
 
 // ==================== Tile Fetch Function ====================
 async function getTile(x: number, y: number, z: number): Promise<Buffer> {
-  logger.info(`getTile: ${x}, ${y}, ${z}`);
-
-  if (typeof x !== "number" || typeof y !== "number" || typeof z !== "number") {
-    const error = new Error("Invalid tile coordinates: x, y, and z must be numbers");
-    logger.error({ x, y, z, error: error.message }, "Tile parameter validation error");
-    throw error;
-  }
+  logger.debug(`getTile: ${x}, ${y}, ${z}`);
 
   const cacheKey = `${x}-${y}-${z}`;
 
   // 1. First check memory cache
   const lruCachedTile = tileCache.get(cacheKey);
   if (lruCachedTile) {
-    logger.info(`tile loaded from LRU cache: ${cacheKey}`);
+    logger.debug(`tile loaded from LRU cache: ${cacheKey}`);
     return lruCachedTile;
   }
 
@@ -202,7 +193,7 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
     try {
       const s3CachedTile = await s3Storage.getTile(z, x, y);
       if (s3CachedTile) {
-        logger.info(`tile loaded from S3 cache: ${cacheKey}`);
+        logger.debug(`tile loaded from S3 cache: ${cacheKey}`);
         // Also save to memory cache
         tileCache.set(cacheKey, s3CachedTile);
         return s3CachedTile;
@@ -230,7 +221,7 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
       tile.getState() !== TileState.LOADED
       && tile.getState() !== TileState.EMPTY
     ) {
-      logger.info("tile not loaded, reloading...");
+      logger.debug("tile not loaded, reloading...");
       await new Promise<void>((resolve, reject) => {
         const timeout = setTimeout(() => {
           // eslint-disable-next-line ts/no-use-before-define
@@ -268,7 +259,7 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
       });
     }
 
-    logger.info(`tile load finished, status: ${tile.getState()}`);
+    logger.debug(`tile load finished, status: ${tile.getState()}`);
 
     if (tile.getState() === TileState.ERROR) {
       const error = new Error("Tile failed to load");
@@ -277,20 +268,11 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
     }
 
     const tileImage = (tile as any).getImage();
-    console.log('Tile image type:', typeof tileImage);
-    console.log('Tile image constructor:', tileImage?.constructor?.name);
-    if (tileImage instanceof globalAny.Canvas) {
-      console.log('Canvas size:', tileImage.width, 'x', tileImage.height);
-    } else if (tileImage instanceof Image) {
-      console.log('Image size:', tileImage.width, 'x', tileImage.height);
-    }
-
-    const data = tileImage;
-    if (!data || typeof data.toBuffer !== "function") {
+    if (!tileImage || typeof tileImage.toBuffer !== "function") {
       throw new Error("Invalid tile image data");
     }
 
-    const buffer = data.toBuffer() as Buffer;
+    const buffer = tileImage.toBuffer() as Buffer;
 
     // 4. Save to memory cache
     tileCache.set(cacheKey, buffer);
@@ -303,7 +285,7 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
     }
 
     if (tileCache.size() % 100 === 0) {
-      logger.info({ cacheStats: tileCache.getStats() }, "Cache stats");
+      logger.debug({ cacheStats: tileCache.getStats() }, "Cache stats");
     }
 
     return buffer;
@@ -332,20 +314,7 @@ function validateTileParams(x: string | undefined, y: string | undefined, z: str
 }
 
 // ==================== Hono Application ====================
-const pinoLogger = pino({
-  level: process.env.LOG_LEVEL || "info",
-  transport: {
-    target: "pino-pretty",
-    options: {
-      colorize: true,
-      translateTime: "SYS:standard",
-      ignore: "pid,hostname",
-    },
-  },
-});
-
 const app = new Hono();
-// app.use(pinoLoggerHono({ pino: pinoLogger }));
 
 app.use("*", async (c, next) => {
   const start = Date.now();
@@ -354,11 +323,11 @@ app.use("*", async (c, next) => {
   try {
     await next();
     const ms = Date.now() - start;
-    pinoLogger.info(`${req.method} ${req.url} - ${ms}ms`);
+    logger.info(`${req.method} ${req.url} - ${ms}ms`);
   }
   catch (err) {
     const ms = Date.now() - start;
-    pinoLogger.error(`${req.method} ${req.url} - ${ms}ms - Error: ${(err as Error).message}`);
+    logger.error(`${req.method} ${req.url} - ${ms}ms - Error: ${(err as Error).message}`);
     throw err;
   }
 });
@@ -380,7 +349,7 @@ app.get("/appmaptile", async (c) => {
     }
 
     const { x: xNum, y: yNum, z: zNum } = validation;
-    const buf = await getTile(xNum, yNum, zNum) as any;
+    const buf = await getTile(xNum, yNum, zNum);
 
     return new Response(buf, {
       status: 200,
@@ -443,14 +412,17 @@ app.post("/s3-cache/clear", async (c) => {
   }
 
   try {
-    const { z, x, y } = c.req.query();
+    const x = c.req.query("x");
+    const y = c.req.query("y");
+    const z = c.req.query("z");
 
-    if (z && x && y) {
-      // Clear specific tile
-      const zNum = Number.parseInt(z);
-      const xNum = Number.parseInt(x);
-      const yNum = Number.parseInt(y);
+    if (x && y && z) {
+      const validation = validateTileParams(x, y, z);
+      if (!validation.valid) {
+        return c.json({ error: validation.error }, 400);
+      }
 
+      const { x: xNum, y: yNum, z: zNum } = validation;
       await s3Storage.deleteTile(zNum, xNum, yNum);
       logger.info(`S3 cache cleared for tile: ${x}-${y}-${z}`);
 
@@ -479,16 +451,16 @@ app.get("/s3-cache/check", async (c) => {
   }
 
   try {
-    const { z, x, y } = c.req.query();
+    const x = c.req.query("x");
+    const y = c.req.query("y");
+    const z = c.req.query("z");
 
-    if (!z || !x || !y) {
-      return c.json({ error: "Missing parameters: z, x, y are required" }, 400);
+    const validation = validateTileParams(x, y, z);
+    if (!validation.valid) {
+      return c.json({ error: validation.error }, 400);
     }
 
-    const zNum = Number.parseInt(z);
-    const xNum = Number.parseInt(x);
-    const yNum = Number.parseInt(y);
-
+    const { x: xNum, y: yNum, z: zNum } = validation;
     const exists = await s3Storage.hasTile(zNum, xNum, yNum);
 
     return c.json({

@@ -1,8 +1,9 @@
 # Build stage
-FROM node:24.18.0-bookworm AS builder
+FROM node:26.5.1-bookworm AS builder
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+ENV CI=true
 RUN npm install -g pnpm
 
 WORKDIR /app
@@ -20,7 +21,7 @@ COPY . .
 RUN pnpm run build
 
 # Production stage
-FROM node:24.18.0-bookworm AS production
+FROM node:26.5.1-bookworm AS production
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -46,4 +47,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:5000/health || exit 1
 
 # Start application with Node.js
-CMD ["node", "--max-old-space-size=3072", "--optimize-for-size", "dist/src/index.js"]
+CMD ["node", "--max-old-space-size=3072", "--optimize-for-size", "dist/index.js"]
