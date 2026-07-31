@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200" height="400" viewBox="0 0 1200 400"
+     role="img" aria-labelledby="hero-title hero-desc">
+  <title id="hero-title">Maptile Proxy — GCJ-02 Coordinate Transforming Tile Cache Server</title>
+  <desc id="hero-desc">A tile proxy server that automatically transforms WGS84 coordinates to GCJ-02 for Chinese map services, with LRU memory cache and S3 persistent storage.</desc>
+
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1E3A5F" stroke-width="0.5" opacity="0.4"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="400" rx="16" fill="#0B1628"/>
+  <rect width="1200" height="400" rx="16" fill="url(#grid)"/>
+
+  <!-- ═══ Left: Title ═══ -->
+  <g transform="translate(56, 0)">
+    <text y="88" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" letter-spacing="2">TILE PROXY SERVER</text>
+    <text y="148" fill="#E8EDF4" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="50" font-weight="700" letter-spacing="-1">Maptile Proxy</text>
+    <text y="190" fill="#7DD3FC" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="21" font-weight="400">GCJ-02 坐标纠偏 + 多级缓存代理</text>
+
+    <!-- Metrics -->
+    <g transform="translate(0, 232)">
+      <circle cx="8" cy="8" r="4" fill="#10B981"/>
+      <text x="20" y="13" fill="#CBD5E1" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="15">3 级缓存架构</text>
+
+      <circle cx="148" cy="8" r="4" fill="#10B981"/>
+      <text x="160" y="13" fill="#CBD5E1" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="15">WGS84 → GCJ-02 自动纠偏</text>
+
+      <circle cx="378" cy="8" r="4" fill="#10B981"/>
+      <text x="390" y="13" fill="#CBD5E1" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="15">Docker 一键部署</text>
+    </g>
+
+    <!-- Tech stack -->
+    <text y="290" fill="#475569" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13">Hono · OpenLayers · S3/MinIO · TypeScript</text>
+  </g>
+
+  <!-- ═══ Right: Tile Grid ═══ -->
+  <g transform="translate(660, 52)">
+    <!-- 10×10 Tile Grid -->
+    <g>
+      <!-- Grid tiles (empty) -->
+      <rect x="0"    y="0"  width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="44"   y="0"  width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="88"   y="0"  width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="132"  y="0"  width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="176"  y="0"  width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="220"  y="0"  width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="264"  y="0"  width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="308"  y="0"  width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="352"  y="0"  width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="396"  y="0"  width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+
+      <rect x="0"    y="44" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="44"   y="44" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="88"   y="44" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="132"  y="44" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="176"  y="44" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="220"  y="44" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="264"  y="44" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="308"  y="44" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="352"  y="44" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="396"  y="44" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+
+      <rect x="0"    y="88" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="44"   y="88" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="88"   y="88" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="132"  y="88" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="176"  y="88" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="220"  y="88" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="264"  y="88" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="308"  y="88" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="352"  y="88" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="396"  y="88" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+
+      <rect x="0"    y="132" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="44"   y="132" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="88"   y="132" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="132"  y="132" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="176"  y="132" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="220"  y="132" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="264"  y="132" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="308"  y="132" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="352"  y="132" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="396"  y="132" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+
+      <rect x="0"    y="176" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="44"   y="176" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="88"   y="176" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="132"  y="176" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="176"  y="176" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="220"  y="176" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="264"  y="176" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="308"  y="176" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="352"  y="176" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+      <rect x="396"  y="176" width="38" height="38" rx="3" fill="#0F2744" stroke="#1E3A5F" stroke-width="1.2"/>
+
+      <!-- Highlighted tiles: WGS84 (blue) and GCJ-02 (orange) -->
+      <rect x="132" y="88" width="38" height="38" rx="3" fill="#1E40AF" stroke="#3B82F6" stroke-width="2"/>
+      <rect x="152" y="107" width="24" height="18" rx="2" fill="#1E3A5F" stroke="#3B82F6" stroke-width="1" opacity="0.8"/>
+
+      <rect x="160" y="100" width="38" height="38" rx="3" fill="#92400E" stroke="#F59E0B" stroke-width="2" opacity="0.85"/>
+      <rect x="180" y="119" width="24" height="18" rx="2" fill="#78350F" stroke="#F59E0B" stroke-width="1" opacity="0.8"/>
+    </g>
+
+    <!-- Grid labels -->
+    <text x="220" y="232" fill="#64748B" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" text-anchor="middle">tile grid z/x/y</text>
+
+    <!-- Coordinate offset arrow -->
+    <g transform="translate(130, 88)">
+      <line x1="30" y1="10" x2="56" y2="24" stroke="#F59E0B" stroke-width="1.8" stroke-dasharray="4,3"/>
+      <polygon points="56,24 50,20 52,26" fill="#F59E0B"/>
+    </g>
+    <text x="128" y="80" fill="#F59E0B" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" text-anchor="middle" opacity="0.9">WGS84→GCJ-02</text>
+
+    <!-- Legend -->
+    <g transform="translate(0, 252)">
+      <rect x="0" y="0" width="12" height="12" rx="2" fill="#1E40AF" stroke="#3B82F6" stroke-width="1"/>
+      <text x="16" y="11" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11">WGS84</text>
+      <rect x="72" y="0" width="12" height="12" rx="2" fill="#92400E" stroke="#F59E0B" stroke-width="1"/>
+      <text x="88" y="11" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11">GCJ-02</text>
+    </g>
+
+    <!-- ═══ Cache Flow ═══ -->
+    <g transform="translate(0, 296)">
+      <text x="0" y="0" fill="#64748B" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing="1">CACHE FLOW</text>
+
+      <!-- Request arrow -->
+      <line x1="0" y1="28" x2="38" y2="28" stroke="#475569" stroke-width="1.5"/>
+      <polygon points="38,28 33,25 33,31" fill="#475569"/>
+
+      <!-- Memory Cache node -->
+      <rect x="44" y="12" width="120" height="32" rx="6" fill="#1E3A5F" stroke="#3B82F6" stroke-width="1.5"/>
+      <text x="104" y="33" fill="#E8EDF4" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" text-anchor="middle" font-weight="600">LRU 缓存</text>
+
+      <!-- Arrow: Memory → S3 -->
+      <line x1="170" y1="28" x2="208" y2="28" stroke="#475569" stroke-width="1.5"/>
+      <polygon points="208,28 203,25 203,31" fill="#475569"/>
+
+      <!-- S3 Cache node -->
+      <rect x="214" y="12" width="120" height="32" rx="6" fill="#064E3B" stroke="#10B981" stroke-width="1.5"/>
+      <text x="274" y="33" fill="#E8EDF4" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" text-anchor="middle" font-weight="600">S3 持久存储</text>
+
+      <!-- Arrow: S3 → Source -->
+      <line x1="340" y1="28" x2="378" y2="28" stroke="#475569" stroke-width="1.5"/>
+      <polygon points="378,28 373,25 373,31" fill="#475569"/>
+
+      <!-- Source node -->
+      <rect x="384" y="12" width="80" height="32" rx="6" fill="#1E293B" stroke="#64748B" stroke-width="1.5"/>
+      <text x="424" y="33" fill="#CBD5E1" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" text-anchor="middle" font-weight="600">源服务</text>
+    </g>
+  </g>
+</svg>
