@@ -5,7 +5,7 @@
   "packageManager": "pnpm@11.17.0",
   "description": "A map tile proxy server",
   "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "main": "index.ts",
   "scripts": {
     "dev": "tsx watch --max-old-space-size=3072 --optimize-for-size --env-file .env.local src/index.ts",
