@@ -13,9 +13,9 @@ import * as olSource from "ol/source.js";
 import WMTSTileGrid from "ol/tilegrid/WMTS.js";
 import TileState from "ol/TileState.js";
 import pino from "pino";
-import gcj02Mercator from "./gcj02.js";
+import gcj02Mercator from "./gcj02";
 
-import TileStorage, { createDefaultStorage, NullStorage } from "./storage.js";
+import TileStorage, { createDefaultStorage, NullStorage } from "./storage";
 
 // ==================== Configuration ====================
 const MAP_SOURCE_URL = process.env.MAP_SOURCE || "https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=YOUR_MAPTILER_KEY";

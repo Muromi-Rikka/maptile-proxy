@@ -46,4 +46,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:5000/health || exit 1
 
 # Start application with Node.js
-CMD ["node", "--max-old-space-size=3072", "--optimize-for-size", "dist/src/index.js"]
+CMD ["node", "--max-old-space-size=3072", "--optimize-for-size", "dist/index.js"]
