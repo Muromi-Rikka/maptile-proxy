@@ -1,5 +1,5 @@
 # Build stage
-FROM node:26.5.1-bookworm AS builder
+FROM node:26.7.0-bookworm AS builder
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -21,7 +21,7 @@ COPY . .
 RUN pnpm run build
 
 # Production stage
-FROM node:26.5.1-bookworm AS production
+FROM node:26.7.0-bookworm AS production
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
