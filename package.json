@@ -28,7 +28,7 @@
     "@typescript-eslint/eslint-plugin": "^8.66.0",
     "@typescript-eslint/parser": "^8.66.0",
     "esbuild": "^0.28.1",
-    "eslint": "^10.8.0",
+    "eslint": "^10.8.1",
     "tsx": "^4.23.10",
     "typescript": "^7.0.2"
   }
