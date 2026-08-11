@@ -2,7 +2,7 @@
   "name": "maptile-proxy",
   "type": "module",
   "version": "1.2.0",
-  "packageManager": "pnpm@11.20.0",
+  "packageManager": "pnpm@11.21.0",
   "description": "A map tile proxy server",
   "author": "",
   "license": "Apache-2.0",
