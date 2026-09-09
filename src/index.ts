@@ -47,12 +47,14 @@ if (Image && Image.prototype) {
   // eslint-disable-next-line ts/ban-ts-comment
   // @ts-expect-error
   Image.prototype.addEventListener = function (type: string, handler: Function) {
+    // eslint-disable-next-line unicorn/no-this-outside-of-class
     (this as any)[`on${type}`] = handler.bind(this);
   };
 
   // eslint-disable-next-line ts/ban-ts-comment
   // @ts-expect-error
   Image.prototype.removeEventListener = function (type: string) {
+    // eslint-disable-next-line unicorn/no-this-outside-of-class
     (this as any)[`on${type}`] = null;
   };
 }
@@ -77,6 +79,7 @@ const logger = pino({
   },
 });
 
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 logger.info(`Map source URL: ${MAP_SOURCE_URL}`);
 
 // ==================== Storage Configuration ====================
@@ -145,6 +148,7 @@ function createRenderLayer() {
       projection: gcj02Mercator,
       tileGrid: new WMTSTileGrid({
         matrixIds,
+        // eslint-disable-next-line unicorn/max-nested-calls
         origin: getTopLeft(gcj02Mercator.getExtent()),
         resolutions,
       }),
@@ -159,7 +163,9 @@ function createRenderLayer() {
 let renderLayer = createRenderLayer();
 const tileCache = new LRUCache(CACHE_MAX_SIZE);
 
-const _cacheResetInterval = setInterval(() => {
+// eslint-disable-next-line unicorn/no-top-level-side-effects
+setInterval(() => {
+  // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
   renderLayer = createRenderLayer();
   tileCache.clear();
   logger.info({ cacheStats: tileCache.getStats() }, "Tile cache cleared and render layer reset");
@@ -167,6 +173,7 @@ const _cacheResetInterval = setInterval(() => {
 
 export function resetRenderLayer(): void {
   logger.info("Manually resetting render layer and cache");
+  // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
   renderLayer = createRenderLayer();
   tileCache.clear();
   logger.info({ cacheStats: tileCache.getStats() }, "Tile cache cleared and render layer reset");
@@ -220,13 +227,7 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
     ) {
       logger.debug("tile not loaded, reloading...");
       await new Promise<void>((resolve, reject) => {
-        const timeout = setTimeout(() => {
-          tile.removeEventListener(EventType.CHANGE, handler);
-          const error = new Error(`Tile loading timeout after ${TILE_LOAD_TIMEOUT}ms`);
-          logger.error({ error: error.message, x, y, z }, "Tile loading timeout");
-          reject(error);
-        }, TILE_LOAD_TIMEOUT);
-
+        let timeout;
         const handler = () => {
           const s = tile.getState();
           switch (s) {
@@ -251,6 +252,13 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
             }
           }
         };
+
+        timeout = setTimeout(() => {
+          tile.removeEventListener(EventType.CHANGE, handler);
+          const error = new Error(`Tile loading timeout after ${TILE_LOAD_TIMEOUT}ms`);
+          logger.error({ error: error.message, x, y, z }, "Tile loading timeout");
+          reject(error);
+        }, TILE_LOAD_TIMEOUT);
 
         tile.addEventListener(EventType.CHANGE, handler);
         tile.load();
@@ -277,9 +285,12 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
 
     // 5. Asynchronously save to S3 cache (if enabled)
     if (isS3Enabled) {
-      s3Storage.saveTile(z, x, y, buffer, "png").catch((error) => {
+      try {
+        await s3Storage.saveTile(z, x, y, buffer, "png");
+      }
+      catch (error) {
         logger.warn({ error: (error as Error).message, x, y, z }, "Failed to save to S3 cache");
-      });
+      }
     }
 
     if (tileCache.size() % 100 === 0) {
@@ -314,6 +325,7 @@ function validateTileParameters(x: string | undefined, y: string | undefined, z:
 // ==================== Hono Application ====================
 const app = new Hono();
 
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 app.use("*", async (c, next) => {
   const start = Date.now();
   const { req } = c;
@@ -330,6 +342,7 @@ app.use("*", async (c, next) => {
   }
 });
 
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 app.get("/appmaptile", async (c) => {
   try {
     const x = c.req.query("x");
@@ -367,6 +380,7 @@ app.get("/appmaptile", async (c) => {
   }
 });
 
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 app.get("/health", (c) => {
   return c.json({
     cacheStats: tileCache.getStats(),
@@ -375,6 +389,7 @@ app.get("/health", (c) => {
   });
 });
 
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 app.get("/cache-stats", (c) => {
   return c.json({
     lruCache: tileCache.getStats(),
@@ -387,6 +402,7 @@ app.get("/cache-stats", (c) => {
   });
 });
 
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 app.post("/reset-cache", (c) => {
   try {
     resetRenderLayer();
@@ -402,6 +418,7 @@ app.post("/reset-cache", (c) => {
   }
 });
 
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 app.post("/s3-cache/clear", async (c) => {
   if (!isS3Enabled) {
     return c.json({ error: "S3 storage is not enabled" }, 400);
@@ -439,6 +456,7 @@ app.post("/s3-cache/clear", async (c) => {
   }
 });
 
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 app.get("/s3-cache/check", async (c) => {
   if (!isS3Enabled) {
     return c.json({ error: "S3 storage is not enabled" }, 400);
@@ -469,6 +487,7 @@ app.get("/s3-cache/check", async (c) => {
   }
 });
 
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 serve(
   {
     fetch: app.fetch,

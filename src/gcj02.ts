@@ -51,7 +51,7 @@ interface PointTransformFunction {
 /**
  * Creates a higher-order function that applies a point transformation to coordinate arrays
  *
- * @param func - The point transformation function to apply to each coordinate
+ * @param function_ - The point transformation function to apply to each coordinate
  * @returns A function that transforms entire coordinate arrays
  *
  * @example
@@ -63,21 +63,13 @@ interface PointTransformFunction {
  * const coords = [120.0, 30.0, 121.0, 31.0];
  * const transformed = transform(coords); // [121.0, 31.0, 122.0, 32.0]
  */
-function forEachPoint(func: PointTransformFunction): ForEachPointFunction {
-  return (input: number[], opt_output?: number[], opt_dimension?: number): number[] => {
+function forEachPoint(function_: PointTransformFunction): ForEachPointFunction {
+  return (input: number[], opt_output?: number[], dimension = 2): number[] => {
     const length_ = input.length;
-    const dimension = opt_dimension ?? 2;
-    let output: number[];
-
-    if (opt_output) {
-      output = opt_output;
-    }
-    else {
-      output = dimension === 2 ? Array.from({ length: length_ }) : [...input];
-    }
+    const output = opt_output ?? (dimension === 2 ? Array.from({ length: length_ }) : [...input]);
 
     for (let offset = 0; offset < length_; offset += dimension) {
-      func(input, output, offset);
+      function_(input, output, offset);
     }
     return output;
   };
@@ -142,7 +134,7 @@ function delta(wgLon: number, wgLat: number): [number, number] {
  *
  * @internal
  */
-function outOfChina(lon: number, lat: number): boolean {
+function isOutOfChina(lon: number, lat: number): boolean {
   return lon < 72.004 || lon > 137.8347 || lat < 0.8293 || lat > 55.8271;
 }
 
@@ -204,7 +196,7 @@ function transformLon(x: number, y: number): number {
 gcj02.toWGS84 = forEachPoint((input: number[], output: number[], offset: number): void => {
   const lng = input[offset];
   const lat = input[offset + 1];
-  if (outOfChina(lng, lat)) {
+  if (isOutOfChina(lng, lat)) {
     output[offset] = lng;
     output[offset + 1] = lat;
   }
@@ -233,7 +225,7 @@ gcj02.toWGS84 = forEachPoint((input: number[], output: number[], offset: number)
 gcj02.fromWGS84 = forEachPoint((input: number[], output: number[], offset: number): void => {
   const lng = input[offset];
   const lat = input[offset + 1];
-  if (outOfChina(lng, lat)) {
+  if (isOutOfChina(lng, lat)) {
     output[offset] = lng;
     output[offset + 1] = lat;
   }
@@ -448,6 +440,7 @@ const gcj02Mecator = new proj.Projection({
 });
 
 // Register GCJ-02 projection with OpenLayers
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 proj.addProjection(gcj02Mecator);
 
 /**
@@ -456,6 +449,7 @@ proj.addProjection(gcj02Mecator);
  * Enables OpenLayers to automatically transform geographic coordinates
  * to GCJ-02 Mercator when using this projection.
  */
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 proj.addCoordinateTransforms(
   "EPSG:4326", // Source: WGS84 geographic coordinates
   gcj02Mecator, // Target: GCJ-02 Mercator projection
@@ -469,6 +463,7 @@ proj.addCoordinateTransforms(
  * Enables OpenLayers to automatically transform Web Mercator coordinates
  * to GCJ-02 Mercator when using this projection.
  */
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 proj.addCoordinateTransforms(
   "EPSG:3857", // Source: Web Mercator
   gcj02Mecator, // Target: GCJ-02 Mercator projection

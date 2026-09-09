@@ -126,7 +126,9 @@ export class TileStorage {
       const chunks: Buffer[] = [];
 
       return new Promise((resolve, reject) => {
-        stream.on("data", chunk => chunks.push(Buffer.from(chunk)));
+        stream.on("data", (chunk) => {
+          chunks.push(Buffer.from(chunk));
+        });
         stream.on("error", reject);
         stream.on("end", () => resolve(Buffer.concat(chunks)));
       });
@@ -185,6 +187,7 @@ export class TileStorage {
   /**
    * Generate S3 key for tile
    */
+  // eslint-disable-next-line unicorn/consistent-class-member-order
   private getTileKey(z: number, x: number, y: number, format: string = "png"): string {
     return `${this.prefix}/${z}/${x}/${y}.${format}`;
   }
