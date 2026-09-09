@@ -147,7 +147,7 @@ importers:
         specifier: ^10.10.0
         version: 10.10.0(jiti@2.7.0)
       jiti:
-        specifier: ^2.4.2
+        specifier: ^2.7.0
         version: 2.7.0
       tsx:
         specifier: ^4.23.13
