@@ -12,17 +12,8 @@
 import * as proj from "ol/proj.js";
 
 /**
- * Function type for transforming individual points within coordinate arrays
- * @param input - Input coordinate array
- * @param output - Output coordinate array (modified in place)
- * @param offset - Current offset within the arrays
- */
-interface PointTransformFunction {
-  (input: number[], output: number[], offset: number): void;
-}
-
-/**
  * Function type for transforming entire coordinate arrays
+ *
  * @param input - Input coordinate array
  * @param opt_output - Optional pre-allocated output array
  * @param opt_dimension - Optional dimension (defaults to 2 for [lng, lat])
@@ -30,6 +21,31 @@ interface PointTransformFunction {
  */
 interface ForEachPointFunction {
   (input: number[], opt_output?: number[], opt_dimension?: number): number[];
+}
+
+/**
+ * GCJ-02 coordinate transformation interface
+ */
+interface GCJ02Transform {
+  /**
+  * Transform from WGS84 to GCJ-02
+  */
+  fromWGS84: ForEachPointFunction;
+  /**
+  * Transform from GCJ-02 to WGS84
+  */
+  toWGS84: ForEachPointFunction;
+}
+
+/**
+ * Function type for transforming individual points within coordinate arrays
+ *
+ * @param input - Input coordinate array
+ * @param output - Output coordinate array (modified in place)
+ * @param offset - Current offset within the arrays
+ */
+interface PointTransformFunction {
+  (input: number[], output: number[], offset: number): void;
 }
 
 /**
@@ -49,7 +65,7 @@ interface ForEachPointFunction {
  */
 function forEachPoint(func: PointTransformFunction): ForEachPointFunction {
   return (input: number[], opt_output?: number[], opt_dimension?: number): number[] => {
-    const len = input.length;
+    const length_ = input.length;
     const dimension = opt_dimension ?? 2;
     let output: number[];
 
@@ -57,15 +73,10 @@ function forEachPoint(func: PointTransformFunction): ForEachPointFunction {
       output = opt_output;
     }
     else {
-      if (dimension !== 2) {
-        output = input.slice();
-      }
-      else {
-        output = Array.from({ length: len });
-      }
+      output = dimension === 2 ? Array.from({ length: length_ }) : [...input];
     }
 
-    for (let offset = 0; offset < len; offset += dimension) {
+    for (let offset = 0; offset < length_; offset += dimension) {
       func(input, output, offset);
     }
     return output;
@@ -73,26 +84,24 @@ function forEachPoint(func: PointTransformFunction): ForEachPointFunction {
 }
 
 /**
- * GCJ-02 coordinate transformation interface
- */
-interface GCJ02Transform {
-  /** Transform from GCJ-02 to WGS84 */
-  toWGS84: ForEachPointFunction;
-  /** Transform from WGS84 to GCJ-02 */
-  fromWGS84: ForEachPointFunction;
-}
-
-/** GCJ-02 transformation functions container */
+ * GCJ-02 transformation functions container
+*/
 const gcj02: GCJ02Transform = {} as GCJ02Transform;
 
-/** Mathematical constant π */
+/**
+ * Mathematical constant π
+*/
 const PI = Math.PI;
 
-/** Semi-major axis of the ellipsoid (meters) */
-const AXIS = 6378245.0;
+/**
+ * Semi-major axis of the ellipsoid (meters)
+*/
+const AXIS = 6378245;
 
-/** Ellipsoid flattening parameter: (a² - b²) / a² */
-// eslint-disable-next-line no-loss-of-precision
+/**
+ * Ellipsoid flattening parameter: (a² - b²) / a²
+*/
+
 const OFFSET = 0.00669342162296594323;
 
 /**
@@ -108,15 +117,15 @@ const OFFSET = 0.00669342162296594323;
  * @internal
  */
 function delta(wgLon: number, wgLat: number): [number, number] {
-  const dLat = transformLat(wgLon - 105.0, wgLat - 35.0);
-  const dLon = transformLon(wgLon - 105.0, wgLat - 35.0);
-  const radLat = (wgLat / 180.0) * PI;
+  const dLat = transformLat(wgLon - 105, wgLat - 35);
+  const dLon = transformLon(wgLon - 105, wgLat - 35);
+  const radLat = (wgLat / 180) * PI;
   const magic = Math.sin(radLat);
   const magicSquared = 1 - OFFSET * magic * magic;
   const sqrtMagic = Math.sqrt(magicSquared);
 
-  const dLatResult = (dLat * 180.0) / (((AXIS * (1 - OFFSET)) / (magicSquared * sqrtMagic)) * PI);
-  const dLonResult = (dLon * 180.0) / ((AXIS / sqrtMagic) * Math.cos(radLat) * PI);
+  const dLatResult = (dLat * 180) / (((AXIS * (1 - OFFSET)) / (magicSquared * sqrtMagic)) * PI);
+  const dLonResult = (dLon * 180) / ((AXIS / sqrtMagic) * Math.cos(radLat) * PI);
 
   return [dLonResult, dLatResult];
 }
@@ -150,11 +159,11 @@ function outOfChina(lon: number, lat: number): boolean {
  * @internal
  */
 function transformLat(x: number, y: number): number {
-  let ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
-  ret += ((20.0 * Math.sin(6.0 * x * PI) + 20.0 * Math.sin(2.0 * x * PI)) * 2.0) / 3.0;
-  ret += ((20.0 * Math.sin(y * PI) + 40.0 * Math.sin((y / 3.0) * PI)) * 2.0) / 3.0;
-  ret += ((160.0 * Math.sin((y / 12.0) * PI) + 320 * Math.sin((y * PI) / 30.0)) * 2.0) / 3.0;
-  return ret;
+  let returnValue = -100 + 2 * x + 3 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
+  returnValue += ((20 * Math.sin(6 * x * PI) + 20 * Math.sin(2 * x * PI)) * 2) / 3;
+  returnValue += ((20 * Math.sin(y * PI) + 40 * Math.sin((y / 3) * PI)) * 2) / 3;
+  returnValue += ((160 * Math.sin((y / 12) * PI) + 320 * Math.sin((y * PI) / 30)) * 2) / 3;
+  return returnValue;
 }
 
 /**
@@ -170,11 +179,11 @@ function transformLat(x: number, y: number): number {
  * @internal
  */
 function transformLon(x: number, y: number): number {
-  let ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
-  ret += ((20.0 * Math.sin(6.0 * x * PI) + 20.0 * Math.sin(2.0 * x * PI)) * 2.0) / 3.0;
-  ret += ((20.0 * Math.sin(x * PI) + 40.0 * Math.sin((x / 3.0) * PI)) * 2.0) / 3.0;
-  ret += ((150.0 * Math.sin((x / 12.0) * PI) + 300.0 * Math.sin((x / 30.0) * PI)) * 2.0) / 3.0;
-  return ret;
+  let returnValue = 300 + x + 2 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
+  returnValue += ((20 * Math.sin(6 * x * PI) + 20 * Math.sin(2 * x * PI)) * 2) / 3;
+  returnValue += ((20 * Math.sin(x * PI) + 40 * Math.sin((x / 3) * PI)) * 2) / 3;
+  returnValue += ((150 * Math.sin((x / 12) * PI) + 300 * Math.sin((x / 30) * PI)) * 2) / 3;
+  return returnValue;
 }
 
 /**
@@ -195,14 +204,14 @@ function transformLon(x: number, y: number): number {
 gcj02.toWGS84 = forEachPoint((input: number[], output: number[], offset: number): void => {
   const lng = input[offset];
   const lat = input[offset + 1];
-  if (!outOfChina(lng, lat)) {
+  if (outOfChina(lng, lat)) {
+    output[offset] = lng;
+    output[offset + 1] = lat;
+  }
+  else {
     const deltaD = delta(lng, lat);
     output[offset] = lng + deltaD[0];
     output[offset + 1] = lat + deltaD[1];
-  }
-  else {
-    output[offset] = lng;
-    output[offset + 1] = lat;
   }
 });
 
@@ -224,14 +233,14 @@ gcj02.toWGS84 = forEachPoint((input: number[], output: number[], offset: number)
 gcj02.fromWGS84 = forEachPoint((input: number[], output: number[], offset: number): void => {
   const lng = input[offset];
   const lat = input[offset + 1];
-  if (!outOfChina(lng, lat)) {
+  if (outOfChina(lng, lat)) {
+    output[offset] = lng;
+    output[offset + 1] = lat;
+  }
+  else {
     const deltaD = delta(lng, lat);
     output[offset] = lng - deltaD[0];
     output[offset + 1] = lat - deltaD[1];
-  }
-  else {
-    output[offset] = lng;
-    output[offset + 1] = lat;
   }
 });
 
@@ -239,22 +248,34 @@ gcj02.fromWGS84 = forEachPoint((input: number[], output: number[], offset: numbe
  * Spherical Mercator projection utilities
  */
 interface SphericalMercator {
-  /** Transform from longitude/latitude to spherical Mercator */
+  /**
+  * Transform from longitude/latitude to spherical Mercator
+  */
   forward: ForEachPointFunction;
-  /** Transform from spherical Mercator to longitude/latitude */
+  /**
+  * Transform from spherical Mercator to longitude/latitude
+  */
   inverse: ForEachPointFunction;
 }
 
-/** Spherical Mercator projection instance */
+/**
+ * Spherical Mercator projection instance
+*/
 const sphericalMercator: SphericalMercator = {} as SphericalMercator;
 
-/** Earth's radius in meters (WGS84 sphere) */
+/**
+ * Earth's radius in meters (WGS84 sphere)
+*/
 const RADIUS = 6378137;
 
-/** Maximum latitude for Web Mercator projection (≈85.05113°) */
+/**
+ * Maximum latitude for Web Mercator projection (≈85.05113°)
+*/
 const MAX_LATITUDE = 85.0511287798;
 
-/** Conversion factor from degrees to radians */
+/**
+ * Conversion factor from degrees to radians
+*/
 const RAD_PER_DEG = Math.PI / 180;
 
 /**
@@ -302,21 +323,35 @@ sphericalMercator.inverse = forEachPoint((input: number[], output: number[], off
  * such as WGS84 → GCJ-02 → Mercator and their inverses.
  */
 interface ProjZH {
-  /** Transform WGS84 longitude/latitude to GCJ-02 Mercator */
-  ll2gmerc: ForEachPointFunction;
-  /** Transform GCJ-02 Mercator to WGS84 longitude/latitude */
+  /**
+  * Transform GCJ-02 Mercator to WGS84 longitude/latitude
+  */
   gmerc2ll: ForEachPointFunction;
-  /** Transform standard Mercator to GCJ-02 Mercator */
-  smerc2gmerc: ForEachPointFunction;
-  /** Transform GCJ-02 Mercator to standard Mercator */
+  /**
+  * Transform GCJ-02 Mercator to standard Mercator
+  */
   gmerc2smerc: ForEachPointFunction;
-  /** Transform WGS84 longitude/latitude to standard Mercator */
+  /**
+  * Transform WGS84 longitude/latitude to GCJ-02 Mercator
+  */
+  ll2gmerc: ForEachPointFunction;
+  /**
+  * Transform WGS84 longitude/latitude to standard Mercator
+  */
   ll2smerc: ForEachPointFunction;
-  /** Transform standard Mercator to WGS84 longitude/latitude */
+  /**
+  * Transform standard Mercator to GCJ-02 Mercator
+  */
+  smerc2gmerc: ForEachPointFunction;
+  /**
+  * Transform standard Mercator to WGS84 longitude/latitude
+  */
   smerc2ll: ForEachPointFunction;
 }
 
-/** Projection transformation utilities instance */
+/**
+ * Projection transformation utilities instance
+*/
 const projzh: ProjZH = {} as ProjZH;
 
 /**
@@ -377,10 +412,14 @@ projzh.gmerc2smerc = (input: number[], opt_output?: number[], opt_dimension?: nu
   return projzh.ll2smerc(output, output, opt_dimension);
 };
 
-/** Standard Mercator forward projection (WGS84 → Mercator) */
+/**
+ * Standard Mercator forward projection (WGS84 → Mercator)
+*/
 projzh.ll2smerc = sphericalMercator.forward;
 
-/** Standard Mercator inverse projection (Mercator → WGS84) */
+/**
+ * Standard Mercator inverse projection (Mercator → WGS84)
+*/
 projzh.smerc2ll = sphericalMercator.inverse;
 
 /**
