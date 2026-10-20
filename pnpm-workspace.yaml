@@ -1,7 +1,8 @@
-minimumReleaseAge: 0
-shellEmulator: true
 
+minimumReleaseAge: 0
+minimumReleaseAgeExcludePrune: true
 trustPolicy: no-downgrade
+shellEmulator: true
 
 allowBuilds:
   canvas: true

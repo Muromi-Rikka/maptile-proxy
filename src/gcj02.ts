@@ -440,7 +440,7 @@ const gcj02Mecator = new proj.Projection({
 });
 
 // Register GCJ-02 projection with OpenLayers
-// eslint-disable-next-line unicorn/no-top-level-side-effects
+
 proj.addProjection(gcj02Mecator);
 
 /**
@@ -449,7 +449,7 @@ proj.addProjection(gcj02Mecator);
  * Enables OpenLayers to automatically transform geographic coordinates
  * to GCJ-02 Mercator when using this projection.
  */
-// eslint-disable-next-line unicorn/no-top-level-side-effects
+
 proj.addCoordinateTransforms(
   "EPSG:4326", // Source: WGS84 geographic coordinates
   gcj02Mecator, // Target: GCJ-02 Mercator projection
@@ -463,7 +463,7 @@ proj.addCoordinateTransforms(
  * Enables OpenLayers to automatically transform Web Mercator coordinates
  * to GCJ-02 Mercator when using this projection.
  */
-// eslint-disable-next-line unicorn/no-top-level-side-effects
+
 proj.addCoordinateTransforms(
   "EPSG:3857", // Source: Web Mercator
   gcj02Mecator, // Target: GCJ-02 Mercator projection

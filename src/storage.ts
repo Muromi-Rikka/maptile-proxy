@@ -187,7 +187,7 @@ export class TileStorage {
   /**
    * Generate S3 key for tile
    */
-  // eslint-disable-next-line unicorn/consistent-class-member-order
+
   private getTileKey(z: number, x: number, y: number, format: string = "png"): string {
     return `${this.prefix}/${z}/${x}/${y}.${format}`;
   }

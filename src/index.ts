@@ -36,10 +36,7 @@ globalAny.self = {};
 globalAny.document = new Document();
 globalAny.document.createElement_ori = globalAny.document.createElement;
 globalAny.document.createElement = (name: string) => {
-  if (name === "canvas") {
-    return new globalAny.Canvas(512, 512);
-  }
-  return globalAny.document.createElement_ori(name);
+  return name === "canvas" ? new globalAny.Canvas(512, 512) : globalAny.document.createElement_ori(name);
 };
 
 // Add event listener methods
@@ -47,14 +44,12 @@ if (Image && Image.prototype) {
   // eslint-disable-next-line ts/ban-ts-comment
   // @ts-expect-error
   Image.prototype.addEventListener = function (type: string, handler: Function) {
-    // eslint-disable-next-line unicorn/no-this-outside-of-class
     (this as any)[`on${type}`] = handler.bind(this);
   };
 
   // eslint-disable-next-line ts/ban-ts-comment
   // @ts-expect-error
   Image.prototype.removeEventListener = function (type: string) {
-    // eslint-disable-next-line unicorn/no-this-outside-of-class
     (this as any)[`on${type}`] = null;
   };
 }
@@ -79,7 +74,6 @@ const logger = pino({
   },
 });
 
-// eslint-disable-next-line unicorn/no-top-level-side-effects
 logger.info(`Map source URL: ${MAP_SOURCE_URL}`);
 
 // ==================== Storage Configuration ====================
@@ -148,7 +142,7 @@ function createRenderLayer() {
       projection: gcj02Mercator,
       tileGrid: new WMTSTileGrid({
         matrixIds,
-        // eslint-disable-next-line unicorn/max-nested-calls
+
         origin: getTopLeft(gcj02Mercator.getExtent()),
         resolutions,
       }),
@@ -163,9 +157,7 @@ function createRenderLayer() {
 let renderLayer = createRenderLayer();
 const tileCache = new LRUCache(CACHE_MAX_SIZE);
 
-// eslint-disable-next-line unicorn/no-top-level-side-effects
 setInterval(() => {
-  // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
   renderLayer = createRenderLayer();
   tileCache.clear();
   logger.info({ cacheStats: tileCache.getStats() }, "Tile cache cleared and render layer reset");
@@ -173,7 +165,7 @@ setInterval(() => {
 
 export function resetRenderLayer(): void {
   logger.info("Manually resetting render layer and cache");
-  // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
+
   renderLayer = createRenderLayer();
   tileCache.clear();
   logger.info({ cacheStats: tileCache.getStats() }, "Tile cache cleared and render layer reset");
@@ -315,17 +307,12 @@ function validateTileParameters(x: string | undefined, y: string | undefined, z:
   const yNumber = Number(y);
   const zNumber = Number(z);
 
-  if (Number.isNaN(xNumber) || Number.isNaN(yNumber) || Number.isNaN(zNumber)) {
-    return { error: "Invalid parameters: x, y, and z must be valid integers", valid: false };
-  }
-
-  return { valid: true, x: xNumber, y: yNumber, z: zNumber };
+  return Number.isNaN(xNumber) || Number.isNaN(yNumber) || Number.isNaN(zNumber) ? { error: "Invalid parameters: x, y, and z must be valid integers", valid: false } : { valid: true, x: xNumber, y: yNumber, z: zNumber };
 }
 
 // ==================== Hono Application ====================
 const app = new Hono();
 
-// eslint-disable-next-line unicorn/no-top-level-side-effects
 app.use("*", async (c, next) => {
   const start = Date.now();
   const { req } = c;
@@ -342,7 +329,6 @@ app.use("*", async (c, next) => {
   }
 });
 
-// eslint-disable-next-line unicorn/no-top-level-side-effects
 app.get("/appmaptile", async (c) => {
   try {
     const x = c.req.query("x");
@@ -380,7 +366,6 @@ app.get("/appmaptile", async (c) => {
   }
 });
 
-// eslint-disable-next-line unicorn/no-top-level-side-effects
 app.get("/health", (c) => {
   return c.json({
     cacheStats: tileCache.getStats(),
@@ -389,7 +374,6 @@ app.get("/health", (c) => {
   });
 });
 
-// eslint-disable-next-line unicorn/no-top-level-side-effects
 app.get("/cache-stats", (c) => {
   return c.json({
     lruCache: tileCache.getStats(),
@@ -402,7 +386,6 @@ app.get("/cache-stats", (c) => {
   });
 });
 
-// eslint-disable-next-line unicorn/no-top-level-side-effects
 app.post("/reset-cache", (c) => {
   try {
     resetRenderLayer();
@@ -418,7 +401,6 @@ app.post("/reset-cache", (c) => {
   }
 });
 
-// eslint-disable-next-line unicorn/no-top-level-side-effects
 app.post("/s3-cache/clear", async (c) => {
   if (!isS3Enabled) {
     return c.json({ error: "S3 storage is not enabled" }, 400);
@@ -456,7 +438,6 @@ app.post("/s3-cache/clear", async (c) => {
   }
 });
 
-// eslint-disable-next-line unicorn/no-top-level-side-effects
 app.get("/s3-cache/check", async (c) => {
   if (!isS3Enabled) {
     return c.json({ error: "S3 storage is not enabled" }, 400);
@@ -487,7 +468,6 @@ app.get("/s3-cache/check", async (c) => {
   }
 });
 
-// eslint-disable-next-line unicorn/no-top-level-side-effects
 serve(
   {
     fetch: app.fetch,

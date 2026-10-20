@@ -1,14 +1,14 @@
 import { renton } from "@renton/eslint-config";
 
 export default renton({
+  jsonc: true,
+  markdown: false,
   stylistic: {
     quotes: "double",
     semi: true,
   },
   typescript: true,
-  jsonc: true,
   yaml: true,
-  markdown: false,
 }, {
   rules: {
     "no-use-before-define": "off",
