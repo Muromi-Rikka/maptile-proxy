@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "tsx watch --max-old-space-size=3072 --optimize-for-size --env-file .env.local src/index.ts",
     "build": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.js --external:canvas --external:pino --external:pino-pretty --banner:js='import { createRequire } from \"node:module\"; const require = createRequire(import.meta.url);'",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --max-warnings=0 --no-warn-ignored"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1160.0",
