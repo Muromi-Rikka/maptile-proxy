@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@renton/eslint-config": "^1.2.1",
-    "@types/node": "^24.19.2",
+    "@types/node": "^26.6.6",
     "esbuild": "^0.28.2",
     "eslint": "^10.13.0",
     "jiti": "^2.7.0",
