@@ -36,7 +36,9 @@ globalAny.self = {};
 globalAny.document = new Document();
 globalAny.document.createElement_ori = globalAny.document.createElement;
 globalAny.document.createElement = (name: string) => {
-  return name === "canvas" ? new globalAny.Canvas(512, 512) : globalAny.document.createElement_ori(name);
+  return name === "canvas"
+    ? new globalAny.Canvas(512, 512)
+    : globalAny.document.createElement_ori(name);
 };
 
 // Add event listener methods
@@ -160,7 +162,9 @@ const tileCache = new LRUCache(CACHE_MAX_SIZE);
 setInterval(() => {
   renderLayer = createRenderLayer();
   tileCache.clear();
-  logger.info({ cacheStats: tileCache.getStats() }, "Tile cache cleared and render layer reset");
+  logger.info({
+    cacheStats: tileCache.getStats(),
+  }, "Tile cache cleared and render layer reset");
 }, CACHE_RESET_INTERVAL);
 
 export function resetRenderLayer(): void {
@@ -168,7 +172,9 @@ export function resetRenderLayer(): void {
 
   renderLayer = createRenderLayer();
   tileCache.clear();
-  logger.info({ cacheStats: tileCache.getStats() }, "Tile cache cleared and render layer reset");
+  logger.info({
+    cacheStats: tileCache.getStats(),
+  }, "Tile cache cleared and render layer reset");
 }
 
 // ==================== Tile Fetch Function ====================
@@ -196,7 +202,12 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
       }
     }
     catch (error) {
-      logger.warn({ error: (error as Error).message, x, y, z }, "Failed to load from S3 cache");
+      logger.warn({
+        error: (error as Error).message,
+        x,
+        y,
+        z,
+      }, "Failed to load from S3 cache");
     }
   }
 
@@ -261,7 +272,12 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
 
     if (tile.getState() === TileState.ERROR) {
       const error = new Error("Tile failed to load");
-      logger.error({ state: tile.getState(), x, y, z }, "Tile load failed");
+      logger.error({
+        state: tile.getState(),
+        x,
+        y,
+        z,
+      }, "Tile load failed");
       throw error;
     }
 
@@ -281,18 +297,30 @@ async function getTile(x: number, y: number, z: number): Promise<Buffer> {
         await s3Storage.saveTile(z, x, y, buffer, "png");
       }
       catch (error) {
-        logger.warn({ error: (error as Error).message, x, y, z }, "Failed to save to S3 cache");
+        logger.warn({
+          error: (error as Error).message,
+          x,
+          y,
+          z,
+        }, "Failed to save to S3 cache");
       }
     }
 
     if (tileCache.size() % 100 === 0) {
-      logger.debug({ cacheStats: tileCache.getStats() }, "Cache stats");
+      logger.debug({
+        cacheStats: tileCache.getStats(),
+      }, "Cache stats");
     }
 
     return buffer;
   }
   catch (error) {
-    logger.error({ error: (error as Error).message, x, y, z }, "Error in getTile");
+    logger.error({
+      error: (error as Error).message,
+      x,
+      y,
+      z,
+    }, "Error in getTile");
     throw error;
   }
 }
@@ -307,7 +335,14 @@ function validateTileParameters(x: string | undefined, y: string | undefined, z:
   const yNumber = Number(y);
   const zNumber = Number(z);
 
-  return Number.isNaN(xNumber) || Number.isNaN(yNumber) || Number.isNaN(zNumber) ? { error: "Invalid parameters: x, y, and z must be valid integers", valid: false } : { valid: true, x: xNumber, y: yNumber, z: zNumber };
+  return Number.isNaN(xNumber) || Number.isNaN(yNumber) || Number.isNaN(zNumber)
+    ? { error: "Invalid parameters: x, y, and z must be valid integers", valid: false }
+    : {
+        valid: true,
+        x: xNumber,
+        y: yNumber,
+        z: zNumber,
+      };
 }
 
 // ==================== Hono Application ====================

@@ -66,7 +66,9 @@ interface PointTransformFunction {
 function forEachPoint(function_: PointTransformFunction): ForEachPointFunction {
   return (input: number[], opt_output?: number[], dimension = 2): number[] => {
     const length_ = input.length;
-    const output = opt_output ?? (dimension === 2 ? Array.from({ length: length_ }) : [...input]);
+    const output = opt_output ?? (dimension === 2
+      ? Array.from({ length: length_ })
+      : [...input]);
 
     for (let offset = 0; offset < length_; offset += dimension) {
       function_(input, output, offset);
