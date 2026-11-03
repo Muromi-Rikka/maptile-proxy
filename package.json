@@ -24,7 +24,7 @@
     "pino-pretty": "^13.2.0"
   },
   "devDependencies": {
-    "@renton/eslint-config": "^1.2.1",
+    "@renton/eslint-config": "^2.0.0",
     "@types/node": "^26.6.6",
     "esbuild": "^0.28.2",
     "eslint": "^10.14.0",
