@@ -27,7 +27,7 @@
     "@renton/eslint-config": "^2.0.0",
     "@types/node": "^26.6.6",
     "esbuild": "^0.28.2",
-    "eslint": "^10.14.0",
+    "eslint": "^10.15.0",
     "jiti": "^2.7.0",
     "tsx": "^4.23.15",
     "typescript": "~6.0.3"
