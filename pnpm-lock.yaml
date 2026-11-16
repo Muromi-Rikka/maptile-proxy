@@ -180,13 +180,13 @@ importers:
         version: 3.1169.0
       '@hono/node-server':
         specifier: ^2.1.8
-        version: 2.1.8(hono@4.13.18)
+        version: 2.1.8(hono@4.13.19)
       canvas:
         specifier: ^3.2.3
         version: 3.2.3
       hono:
-        specifier: ^4.13.18
-        version: 4.13.18
+        specifier: ^4.13.19
+        version: 4.13.19
       nodom:
         specifier: ^2.4.0
         version: 2.4.0
@@ -1457,8 +1457,8 @@ packages:
   help-me@5.0.0:
     resolution: {integrity: sha512-7xgomUX6ADmcYzFik0HzAxh/73YlKR9bmFzf51CZwR+b6YtzU2m0u49hQCqV6SvlqIqsaxovfwdvbnsw3b/zpg==}
 
-  hono@4.13.18:
-    resolution: {integrity: sha512-H9q/E1XizaWstJxUW881dmLxEj+t/TrGGnyxINkm4+sK0qUwsMtFdo2BWI9Vs3cIS19MU6b6iCijoUoEf4f3DA==}
+  hono@4.13.19:
+    resolution: {integrity: sha512-KmXvQAXwcAHV+muzbIwoJ23niEB5nMoDVr9WcRkU8mvjUECm/1+7v4Jgp7P7a+H6MLFrh+vXrGonGrGS+RQfkA==}
     engines: {node: '>=16.9.0'}
 
   hookified@1.15.1:
@@ -2579,9 +2579,9 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
-  '@hono/node-server@2.1.8(hono@4.13.18)':
+  '@hono/node-server@2.1.8(hono@4.13.19)':
     dependencies:
-      hono: 4.13.18
+      hono: 4.13.19
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -3513,7 +3513,7 @@ snapshots:
 
   help-me@5.0.0: {}
 
-  hono@4.13.18: {}
+  hono@4.13.19: {}
 
   hookified@1.15.1: {}
 
