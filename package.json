@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1173.0",
-    "@hono/node-server": "^2.1.9",
+    "@hono/node-server": "^2.1.11",
     "canvas": "^3.2.3",
     "hono": "^4.13.19",
     "nodom": "^2.4.0",
